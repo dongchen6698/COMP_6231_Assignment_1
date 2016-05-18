@@ -1,7 +1,7 @@
 package RecordInfomation;
 
 public class DoctorRecord {
-	private String recordsID;
+
 	private String firstName;
 	private String lastName;
 	private String address;
@@ -9,9 +9,8 @@ public class DoctorRecord {
 	private String specialization;
 	private String location;
 	
-	public DoctorRecord(String n_recordsID, String n_firstName, String n_lastName, String n_address, String n_phone, String n_specialization, String n_location){
+	public DoctorRecord(String n_firstName, String n_lastName, String n_address, String n_phone, String n_specialization, String n_location){
 	
-		this.recordsID = n_recordsID;
 		this.firstName = n_firstName;
 		this.lastName = n_lastName;
 		this.address = n_address;
@@ -19,14 +18,6 @@ public class DoctorRecord {
 		this.specialization = n_specialization;
 		this.location = n_location;
 		
-	}
-
-	public String getRecordsID() {
-		return recordsID;
-	}
-
-	public void setRecordsID(String recordsID) {
-		this.recordsID = recordsID;
 	}
 
 	public String getFirstName() {
@@ -75,6 +66,12 @@ public class DoctorRecord {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+	
+	@Override
+	public String toString() {
+		String str = "First Name: "+ getFirstName() + "\n" + "Last Name: " + getLastName() + "\n";
+		return str;
 	}
 	
 	

@@ -1,29 +1,23 @@
 package RecordInfomation;
 
+import java.util.Date;
+
 public class NurseRecord {
-	private String recordsID;
+
 	private String firstName;
 	private String lastName;
 	private String designation;
 	private String status;
 	private String statusDate;
 	
-	public NurseRecord(String n_recordsID, String n_firstName, String n_lastName, String n_designation, String n_status, String n_statusDate) {
+	public NurseRecord(String n_firstName, String n_lastName, String n_designation, String n_status, String n_statusDate) {
 		
-		this.recordsID = n_recordsID;
 		this.firstName = n_firstName;
 		this.lastName = n_lastName;
 		this.designation = n_designation;
 		this.status = n_status;
 		this.statusDate = n_statusDate;
-	}
-
-	public String getRecordsID() {
-		return recordsID;
-	}
-
-	public void setRecordsID(String recordsID) {
-		this.recordsID = recordsID;
+		
 	}
 
 	public String getFirstName() {
@@ -66,5 +60,10 @@ public class NurseRecord {
 		this.statusDate = statusDate;
 	}
 	
+	@Override
+	public String toString() {
+		String str = "my name is nurse";
+		return str;
+	}
 	
 }
