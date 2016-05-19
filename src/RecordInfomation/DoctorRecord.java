@@ -70,7 +70,12 @@ public class DoctorRecord {
 	
 	@Override
 	public String toString() {
-		String str = "First Name: "+ getFirstName() + "\n" + "Last Name: " + getLastName() + "\n";
+		String str = "First Name: "+ getFirstName() + "\n" 
+					+ "Last Name: " + getLastName() + "\n"
+					+ "Address: " + getAddress() + "\n"
+					+ "Phone:" + getPhone() + "\n"
+					+ "specialization: " + getSpecialization() + "\n"
+					+ "location: " + getLocation() + "\n";
 		return str;
 	}
 	

@@ -1,7 +1,5 @@
 package RecordInfomation;
 
-import java.util.Date;
-
 public class NurseRecord {
 
 	private String firstName;
@@ -62,7 +60,11 @@ public class NurseRecord {
 	
 	@Override
 	public String toString() {
-		String str = "my name is nurse";
+		String str = "First Name: "+ getFirstName() + "\n" 
+				+ "Last Name: " + getLastName() + "\n"
+				+ "Designation: " + getDesignation() + "\n"
+				+ "Status:" + getStatus() + "\n"
+				+ "StatusDate" + getStatusDate() + "\n";
 		return str;
 	}
 	

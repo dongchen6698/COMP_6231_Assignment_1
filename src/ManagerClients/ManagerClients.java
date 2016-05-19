@@ -4,6 +4,8 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ClinicServers.ClinicServers_Interface;
 
@@ -13,9 +15,10 @@ public class ManagerClients {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static void showMenu()
+	public static void showMenu(String managerID)
 	{
-		System.out.println("\n****Welcome to DSMS****\n");
+		System.out.println("****Welcome to DSMS****");
+		System.out.println("****Manager: "+managerID +"****\n");
 		System.out.println("Please select an option (1-4)");
 		System.out.println("1. Create Doctor Record.");
 		System.out.println("2. Create Nurse Record");
@@ -24,17 +27,43 @@ public class ManagerClients {
 		System.out.println("5. Exit DSMS");
 	}
 	
+	public static Boolean checkManagerID(String ID){
+		String pattern = "^(MTL|LVL|DDO)(\\d{5})$";
+		Pattern re = Pattern.compile(pattern,Pattern.CASE_INSENSITIVE);
+		Matcher matcher = re.matcher(ID);
+		if(matcher.find()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	public static void main(String[] args){
 		try {
-			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
-			ClinicServers_Interface stub = (ClinicServers_Interface) registry.lookup("Montreal");
-
-			int userChoice=0;
-			//String userInput="";
-			String requestInput= "Please enter a random string.";
+			String managerID = null;
+			Registry registry = null;
+			ClinicServers_Interface stub = null;
 			Scanner keyboard = new Scanner(System.in);
+			do{
+				System.out.println("\n****Please input the manager ID****\n");
+				managerID = keyboard.next();
+			}while(!checkManagerID(managerID));
 			
-			showMenu();
+			if(managerID.substring(0, 3).equalsIgnoreCase("mtl")){
+				registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				stub = (ClinicServers_Interface) registry.lookup("Montreal");
+			}else if(managerID.substring(0, 3).equalsIgnoreCase("lvl")){
+				
+			}else if(managerID.substring(0, 3).equalsIgnoreCase("ddo")){
+				
+			}
+
+			
+			int userChoice=0;
+			String requestInput= "Please enter a random string.";
+			
+			
+			showMenu(managerID);
 			
 			while(true)
 			{
@@ -79,7 +108,7 @@ public class ManagerClients {
 					String d_result = stub.createDRecord(d_firstname, d_lastname, d_address, d_phone, d_specialization, d_location);
 					System.out.println(d_result);
 					
-					showMenu();
+					showMenu(managerID);
 					break;
 				case 2:
 					System.out.println("Please input the FirstName");
@@ -100,7 +129,7 @@ public class ManagerClients {
 					String result = stub.createNRecord(n_firstname, n_lastname, n_designation, n_status, n_status_date);
 					System.out.println(result);
 					
-					showMenu();
+					showMenu(managerID);
 					break;
 				case 3:
 					
@@ -117,7 +146,7 @@ public class ManagerClients {
 					String e_result = stub.editRecord(recordID, fieldname, newvalue);
 					System.out.println(e_result);
 					
-					showMenu();
+					showMenu(managerID);
 					break;
 				case 5:
 					System.out.println("Have a nice day!");

@@ -6,13 +6,11 @@ public class RecordInfo {
 	private NurseRecord nurseRecord;
 	
 	public RecordInfo(String n_recordID, DoctorRecord n_doctorRecord) {
-		// TODO Auto-generated constructor stub
 		this.recordID = n_recordID;
 		this.doctorRecord = n_doctorRecord;
 	}
 	
 	public RecordInfo(String n_recordID, NurseRecord n_nurseRecord) {
-		// TODO Auto-generated constructor stub
 		this.recordID = n_recordID;
 		this.nurseRecord = n_nurseRecord;
 	}

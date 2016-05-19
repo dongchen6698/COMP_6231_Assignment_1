@@ -24,33 +24,23 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		super();
 	}
 
-	public String checkLocation(String location){
-		if(location.equalsIgnoreCase("Montreal")){
-			return "mtl";
-		}else if(location.equalsIgnoreCase("Laval")){
-				return "lvl";
-			}else if (location.equalsIgnoreCase("Dollard-des-Ormeaux")){
-				return "ddo";
-			}
-		return null;
-	}
-
 	@Override
 	public String createDRecord(String firstName, String lastName, String address, String phone,
 			String specialization, String location) throws RemoteException {
-		// TODO Auto-generated method stub
-		String recordID = "DR" + Integer.toString(startID++);
+		
+		String recordID = null;
+		RecordInfo doc_recorde_with_recordID = null;
 		Character capital_lastname = lastName.charAt(0);
 		if(mtl_hash.containsKey(capital_lastname)){
 			list = mtl_hash.get(capital_lastname);
 		}else{
 			list = new ArrayList<RecordInfo>();
 		}
-		location = checkLocation(location);
 		DoctorRecord doc_recorde = new DoctorRecord(firstName, lastName, address, phone, specialization, location);
-		RecordInfo doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
-		list.add(doc_recorde_with_recordID);
 		synchronized (this) {
+			recordID = "DR" + Integer.toString(startID++);
+			doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
+			list.add(doc_recorde_with_recordID);
 			mtl_hash.put(capital_lastname, list);
 		}
 		return "DoctorID: " + doc_recorde_with_recordID.getRecordID() + " buid succeed !" + "\n" +doc_recorde_with_recordID.toString();
@@ -59,8 +49,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	@Override
 	public String createNRecord(String firstName, String lastName, String designation, String status,
 			String statusDate) throws RemoteException {
-		// TODO Auto-generated method stub
-		String recordID = "NR" + Integer.toString(startID++);
+		
+		String recordID = null;
+		RecordInfo nur_recorde_with_recordID = null;
+		 
 		Character capital_lastname = lastName.charAt(0);
 		if(mtl_hash.containsKey(capital_lastname)){
 			list = mtl_hash.get(capital_lastname);
@@ -68,9 +60,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 			list = new ArrayList<RecordInfo>();
 		}
 		NurseRecord nur_recorde = new NurseRecord(firstName, lastName, designation, status, statusDate);
-		RecordInfo nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
-		list.add(nur_recorde_with_recordID);
 		synchronized (this) {
+			recordID = "NR" + Integer.toString(startID++);
+			nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
+			list.add(nur_recorde_with_recordID);
 			mtl_hash.put(capital_lastname, list);
 		}
 		return "NurseID: " + nur_recorde_with_recordID.getRecordID() + " buid succeed !" + "\n" +nur_recorde_with_recordID.toString();
@@ -78,34 +71,12 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 
 	@Override
 	public String getRecordCounts(String recordType) throws RemoteException {
-		// TODO Auto-generated method stub
-		if(recordType.equalsIgnoreCase("DR")){
-			
-		}
 		
-		if(recordType.equalsIgnoreCase("NR")){
-			
-			
-		}
-		
-		if(recordType.equalsIgnoreCase("ALL")){
-			
-			
-			
-		}
-		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:mtl_hash.entrySet()){
-			System.out.println(entry.getKey());
-			for(RecordInfo record:entry.getValue()){
-				System.out.println(record.getRecordID());
-			}
-		}
-		int size = mtl_hash.size();
 		return null;
 	}
 
 	@Override
 	public String editRecord(String recordID, String fieldName, String newValue) throws RemoteException {
-		// TODO Auto-generated method stub
 		
 		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:mtl_hash.entrySet()){
 			System.out.println(entry.getKey());
