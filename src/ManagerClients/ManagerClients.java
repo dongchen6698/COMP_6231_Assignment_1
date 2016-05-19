@@ -60,7 +60,6 @@ public class ManagerClients {
 
 			
 			int userChoice=0;
-			String requestInput= "Please enter a random string.";
 			
 			
 			showMenu(managerID);

@@ -1,10 +1,15 @@
 package ClinicServers.Montreal_MTL;
 
+import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,13 +20,22 @@ import RecordInfomation.NurseRecord;
 import RecordInfomation.RecordInfo;
 
 public class ClinicServer_MTL implements ClinicServers_Interface {
+	static ArrayList<String> managerlist = new ArrayList(Arrays.asList("mtl10000", "mtl10001", "mtl10002"));
 	Map<Character, ArrayList<RecordInfo>> mtl_hash = new HashMap<Character, ArrayList<RecordInfo>>();
 	ArrayList<RecordInfo> list = null;
 	int startID = 10000;
 	
 	public ClinicServer_MTL() {
-		// TODO Auto-generated constructor stub
 		super();
+	}
+	
+	public static String checkManagerIDValid(String managerID){
+		for(String account: managerlist){
+			if(managerID.equals(account)){
+				return "yes";
+			}
+		}
+		return "no";
 	}
 
 	@Override
@@ -119,40 +133,36 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		return "Hello";
 	}
 	
+	public static void exportServerObj() throws Exception{
+		String server_name = "Montreal";
+		ClinicServers_Interface mtl_obj = new ClinicServer_MTL();
+		ClinicServers_Interface stub = (ClinicServers_Interface) UnicastRemoteObject.exportObject(mtl_obj, 0);
+		Registry registry = LocateRegistry.createRegistry(1099);
+        registry.bind(server_name, stub);
+        System.out.println("ClinicServer_MTL bound");
+	}
 	public static void main(String[] args) {
 //		if(System.getSecurityManager() == null){
 //			System.setSecurityManager(new SecurityManager());
 //		}
+		DatagramSocket aSocket = null;
 		try{
-			String server_name = "Montreal";
-			ClinicServers_Interface mtl_obj = new ClinicServer_MTL();
-			ClinicServers_Interface stub = (ClinicServers_Interface) UnicastRemoteObject.exportObject(mtl_obj, 0);
-			Registry registry = LocateRegistry.createRegistry(1099);
-            registry.bind(server_name, stub);
-            System.out.println("ClinicServer_MTL bound");
+			exportServerObj();
+			aSocket = new DatagramSocket(6001); 
+			byte[] buffer = new byte[100]; 
+			while(true){
+				DatagramPacket request = new DatagramPacket(buffer, buffer.length); 
+				aSocket.receive(request);
+				String result = checkManagerIDValid(new String(request.getData()).trim());
+				DatagramPacket reply = new DatagramPacket(result.getBytes(),result.getBytes().length, request.getAddress(), request.getPort()); 
+				aSocket.send(reply);
+			}
 		}
 		catch(Exception e){
-			System.out.print("ClinicServer_MTL Exception!!");
 			e.printStackTrace();
+		} 
+		finally{
+			if(aSocket != null) aSocket.close();
 		}
 	}
-
-	public Map<Character, ArrayList<RecordInfo>> getMtl_hash() {
-		return mtl_hash;
-	}
-
-	public void setMtl_hash(Map<Character, ArrayList<RecordInfo>> mtl_hash) {
-		this.mtl_hash = mtl_hash;
-	}
-
-	public int getStartID() {
-		return startID;
-	}
-
-	public void setStartID(int startID) {
-		this.startID = startID;
-	}
-
-	
-
 }
