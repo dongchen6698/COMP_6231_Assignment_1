@@ -15,15 +15,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ClinicServers.ClinicServers_Interface;
+import CommonServer.CommonNum_Interface;
 import RecordInfomation.DoctorRecord;
 import RecordInfomation.NurseRecord;
 import RecordInfomation.RecordInfo;
 
 public class ClinicServer_MTL implements ClinicServers_Interface {
 	static ArrayList<String> managerlist = new ArrayList(Arrays.asList("mtl10000", "mtl10001", "mtl10002"));
-	Map<Character, ArrayList<RecordInfo>> mtl_hash = new HashMap<Character, ArrayList<RecordInfo>>();
-	ArrayList<RecordInfo> list = null;
-	int startID = 10000;
+	static Map<Character, ArrayList<RecordInfo>> mtl_hash = new HashMap<Character, ArrayList<RecordInfo>>();
+	static ArrayList<RecordInfo> list = null;
+	static Registry registry;
+	static CommonNum_Interface stub;
+	static int startID;
 	
 	public ClinicServer_MTL() {
 		super();
@@ -37,7 +40,13 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		}
 		return "no";
 	}
-
+	
+	public static CommonNum_Interface getStubFromCommon() throws Exception{
+		registry = LocateRegistry.getRegistry();
+		stub = (CommonNum_Interface)registry.lookup("CommonServer");
+		return stub;
+	}
+	
 	@Override
 	public String createDRecord(String firstName, String lastName, String address, String phone,
 			String specialization, String location) throws RemoteException {
@@ -52,7 +61,11 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		}
 		DoctorRecord doc_recorde = new DoctorRecord(firstName, lastName, address, phone, specialization, location);
 		synchronized (this) {
-			recordID = "DR" + Integer.toString(startID++);
+			try{
+			recordID = "DR" + getStubFromCommon().getSartNumber();
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 			doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
 			list.add(doc_recorde_with_recordID);
 			mtl_hash.put(capital_lastname, list);
@@ -75,7 +88,11 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		}
 		NurseRecord nur_recorde = new NurseRecord(firstName, lastName, designation, status, statusDate);
 		synchronized (this) {
-			recordID = "NR" + Integer.toString(startID++);
+			try{
+				recordID = "NR" + getStubFromCommon().getSartNumber();
+				}catch(Exception e){
+					e.printStackTrace();
+				}
 			nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
 			list.add(nur_recorde_with_recordID);
 			mtl_hash.put(capital_lastname, list);
@@ -86,7 +103,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	@Override
 	public String getRecordCounts(String recordType) throws RemoteException {
 		
-		return null;
+		return Integer.toString(mtl_hash.size());
 	}
 
 	@Override
@@ -97,34 +114,34 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 			for(RecordInfo record:entry.getValue()){
 				System.out.println(record.getRecordID());
 				if(recordID.equalsIgnoreCase(record.getRecordID())){
-					if(recordID.contains("DR")){
+					if(recordID.contains("DR")||recordID.contains("dr")){
 						if(fieldName.equalsIgnoreCase("Address")){
 							record.getDoctorRecord().setAddress(newValue);
-							return "edit succeed !";
+							return "edit succeed !\n"+record.toString();
 						}else if(fieldName.equalsIgnoreCase("Phone")){
 							record.getDoctorRecord().setPhone(newValue);
-							return "edit succeed !";
+							return "edit succeed !\n"+record.toString();
 						}else if (fieldName.equalsIgnoreCase("Location")){
 							record.getDoctorRecord().setLocation(newValue);
-							return "edit succeed !";
+							return "edit succeed !\n"+record.toString();
 						}
-					}else if(recordID.contains("NR")){
+					}else if(recordID.contains("NR")||recordID.contains("nr")){
 						if(fieldName.equalsIgnoreCase("Designation")){
 							record.getNurseRecord().setDesignation(newValue);
-							return "edit succeed !";
+							return "edit succeed !\n"+record.toString();
 						}else if(fieldName.equalsIgnoreCase("Status")){
 							record.getNurseRecord().setStatus(newValue);
-							return "edit succeed !";
+							return "edit succeed !\n"+record.toString();
 						}else if (fieldName.equalsIgnoreCase("statusDate")){
 							record.getNurseRecord().setStatusDate(newValue);
-							return "edit succeed !";
+							return "edit succeed !\n"+record.toString();
 						}
 					}
 				}
 			}
 		}
 		
-		return Integer.toString(mtl_hash.size());
+		return "edit failed";
 	}
 	
 	@Override
@@ -137,8 +154,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		String server_name = "Montreal";
 		ClinicServers_Interface mtl_obj = new ClinicServer_MTL();
 		ClinicServers_Interface stub = (ClinicServers_Interface) UnicastRemoteObject.exportObject(mtl_obj, 0);
-		Registry registry = LocateRegistry.createRegistry(1099);
-        registry.bind(server_name, stub);
+		Registry registry = LocateRegistry.getRegistry();
+        registry.rebind(server_name, stub);
+        mtl_hash.put('l', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00001", new DoctorRecord("si", "li", "Montreal", "12345678", "abc", "mtl")))));
+        mtl_hash.put('z', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00002", new DoctorRecord("san", "zhang", "laval", "12345678", "abc", "lvl")))));
         System.out.println("ClinicServer_MTL bound");
 	}
 	public static void main(String[] args) {

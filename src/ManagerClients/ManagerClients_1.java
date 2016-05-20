@@ -173,7 +173,10 @@ public class ManagerClients_1 {
 					showMenu(managerID);
 					break;
 				case 3:
-					
+					System.out.println("Please input search type");
+					String searchtype = keyboard.next();
+					String s_result = stub.getRecordCounts(searchtype);
+					System.out.println(s_result);
 				case 4:
 					System.out.println("Please input the RecordID");
 					String recordID = keyboard.next();
