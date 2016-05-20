@@ -10,14 +10,12 @@ public class DoctorRecord {
 	private String location;
 	
 	public DoctorRecord(String n_firstName, String n_lastName, String n_address, String n_phone, String n_specialization, String n_location){
-	
 		this.firstName = n_firstName;
 		this.lastName = n_lastName;
 		this.address = n_address;
 		this.phone = n_phone;
 		this.specialization = n_specialization;
 		this.location = n_location;
-		
 	}
 
 	public String getFirstName() {

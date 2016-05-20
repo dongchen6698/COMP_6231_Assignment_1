@@ -1,34 +1,30 @@
-package ClinicServers.Montreal_MTL;
+package ClinicServers;
 
-import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import ClinicServers.ClinicServers_Interface;
-import CommonServer.CommonNum_Interface;
+import NumAssignServer.NumAssign_Interface;
 import RecordInfomation.DoctorRecord;
 import RecordInfomation.NurseRecord;
 import RecordInfomation.RecordInfo;
 
-public class ClinicServer_MTL implements ClinicServers_Interface {
-	static ArrayList<String> managerlist = new ArrayList(Arrays.asList("mtl10000", "mtl10001", "mtl10002"));
-	static Map<Character, ArrayList<RecordInfo>> mtl_hash = new HashMap<Character, ArrayList<RecordInfo>>();
+public class ClinicServer_LVL implements ClinicServers_Interface {
+	static ArrayList<String> managerlist = new ArrayList<String>(Arrays.asList("lvl10000", "lvl10001", "lvl10002"));
+	static Map<Character, ArrayList<RecordInfo>> lvl_hash = new HashMap<Character, ArrayList<RecordInfo>>();
 	static ArrayList<RecordInfo> list = null;
 	static Registry registry;
-	static CommonNum_Interface stub;
+	static NumAssign_Interface stub;
 	static int startID;
 	
-	public ClinicServer_MTL() {
+	public ClinicServer_LVL() {
 		super();
 	}
 	
@@ -41,9 +37,9 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		return "no";
 	}
 	
-	public static CommonNum_Interface getStubFromCommon() throws Exception{
+	public static NumAssign_Interface getStubFromCommon() throws Exception{
 		registry = LocateRegistry.getRegistry();
-		stub = (CommonNum_Interface)registry.lookup("CommonServer");
+		stub = (NumAssign_Interface)registry.lookup("CommonServer");
 		return stub;
 	}
 	
@@ -54,8 +50,8 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		String recordID = null;
 		RecordInfo doc_recorde_with_recordID = null;
 		Character capital_lastname = lastName.charAt(0);
-		if(mtl_hash.containsKey(capital_lastname)){
-			list = mtl_hash.get(capital_lastname);
+		if(lvl_hash.containsKey(capital_lastname)){
+			list = lvl_hash.get(capital_lastname);
 		}else{
 			list = new ArrayList<RecordInfo>();
 		}
@@ -68,7 +64,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 			}
 			doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
 			list.add(doc_recorde_with_recordID);
-			mtl_hash.put(capital_lastname, list);
+			lvl_hash.put(capital_lastname, list);
 		}
 		return "DoctorID: " + doc_recorde_with_recordID.getRecordID() + " buid succeed !" + "\n" +doc_recorde_with_recordID.toString();
 	}
@@ -81,8 +77,8 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		RecordInfo nur_recorde_with_recordID = null;
 		 
 		Character capital_lastname = lastName.charAt(0);
-		if(mtl_hash.containsKey(capital_lastname)){
-			list = mtl_hash.get(capital_lastname);
+		if(lvl_hash.containsKey(capital_lastname)){
+			list = lvl_hash.get(capital_lastname);
 		}else{
 			list = new ArrayList<RecordInfo>();
 		}
@@ -95,7 +91,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 				}
 			nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
 			list.add(nur_recorde_with_recordID);
-			mtl_hash.put(capital_lastname, list);
+			lvl_hash.put(capital_lastname, list);
 		}
 		return "NurseID: " + nur_recorde_with_recordID.getRecordID() + " buid succeed !" + "\n" +nur_recorde_with_recordID.toString();
 	}
@@ -103,16 +99,16 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	@Override
 	public String getRecordCounts(String recordType) throws RemoteException {
 		
-		return Integer.toString(mtl_hash.size());
+		return Integer.toString(lvl_hash.size());
 	}
 
 	@Override
 	public String editRecord(String recordID, String fieldName, String newValue) throws RemoteException {
 		
-		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:mtl_hash.entrySet()){
-			System.out.println(entry.getKey());
+		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:lvl_hash.entrySet()){
+			//System.out.println(entry.getKey());
 			for(RecordInfo record:entry.getValue()){
-				System.out.println(record.getRecordID());
+				//System.out.println(record.getRecordID());
 				if(recordID.equalsIgnoreCase(record.getRecordID())){
 					if(recordID.contains("DR")||recordID.contains("dr")){
 						if(fieldName.equalsIgnoreCase("Address")){
@@ -146,19 +142,18 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	
 	@Override
 	public String sayHello() throws RemoteException {
-		// TODO Auto-generated method stub
 		return "Hello";
 	}
 	
 	public static void exportServerObj() throws Exception{
-		String server_name = "Montreal";
-		ClinicServers_Interface mtl_obj = new ClinicServer_MTL();
+		String server_name = "Laval";
+		ClinicServers_Interface mtl_obj = new ClinicServer_LVL();
 		ClinicServers_Interface stub = (ClinicServers_Interface) UnicastRemoteObject.exportObject(mtl_obj, 0);
 		Registry registry = LocateRegistry.getRegistry();
         registry.rebind(server_name, stub);
-        mtl_hash.put('l', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00001", new DoctorRecord("si", "li", "Montreal", "12345678", "abc", "mtl")))));
-        mtl_hash.put('z', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00002", new DoctorRecord("san", "zhang", "laval", "12345678", "abc", "lvl")))));
-        System.out.println("ClinicServer_MTL bound");
+        lvl_hash.put('l', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00003", new DoctorRecord("zhong", "li", "Montreal", "12345678", "abc", "mtl")))));
+        lvl_hash.put('z', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00004", new DoctorRecord("wu", "zhang", "laval", "12345678", "abc", "lvl")))));
+        System.out.println("ClinicServer_LVL bound");
 	}
 	public static void main(String[] args) {
 //		if(System.getSecurityManager() == null){
@@ -167,7 +162,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		DatagramSocket aSocket = null;
 		try{
 			exportServerObj();
-			aSocket = new DatagramSocket(6001); 
+			aSocket = new DatagramSocket(6002); 
 			byte[] buffer = new byte[100]; 
 			while(true){
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length); 

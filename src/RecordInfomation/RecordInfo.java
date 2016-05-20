@@ -42,12 +42,15 @@ public class RecordInfo {
 	@Override
 	public String toString() {
 		String str = null;
-		if(doctorRecord != null){
+		switch (recordID.substring(0, 2)) {
+		case "DR":
 			str = "RecordID: " + getRecordID() + "\n" + doctorRecord.toString();
-		}else if(nurseRecord != null){
+			return str;
+		case "NR":
 			str = "RecordID: " + getRecordID() + "\n" + nurseRecord.toString();
+			return str;
+		default:
+			return null;
 		}
-		return str;
 	}
-	
 }

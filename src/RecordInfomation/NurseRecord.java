@@ -9,13 +9,11 @@ public class NurseRecord {
 	private String statusDate;
 	
 	public NurseRecord(String n_firstName, String n_lastName, String n_designation, String n_status, String n_statusDate) {
-		
 		this.firstName = n_firstName;
 		this.lastName = n_lastName;
 		this.designation = n_designation;
 		this.status = n_status;
-		this.statusDate = n_statusDate;
-		
+		this.statusDate = n_statusDate;	
 	}
 
 	public String getFirstName() {
