@@ -11,6 +11,11 @@ import java.util.regex.Pattern;
 
 import Server_Side.ClinicServers_Interface;
 
+/**
+ * This is a Client side of DSMS.
+ * @author AlexChen
+ *
+ */
 public class ManagerClients {
 	public static String managerID;
 	public static ClinicServers_Interface stub;
@@ -19,6 +24,11 @@ public class ManagerClients {
 		super();
 	}
 	
+	/**
+	 * This is a local function for check manager format use Regular expression.
+	 * @param n_managerID
+	 * @return
+	 */
 	public static Boolean checkManagerIDFormat(String n_managerID){
 		String pattern = "^(MTL|LVL|DDO)(\\d{5})$";
 		Pattern re = Pattern.compile(pattern,Pattern.CASE_INSENSITIVE);
@@ -31,6 +41,9 @@ public class ManagerClients {
 		}
 	}
 	
+	/**
+	 * This is a loop for require user to input the managerID, like Login.
+	 */
 	public static void checkManagerLogIn(){
 		Boolean valid = false;
 		while(!valid){
@@ -43,6 +56,11 @@ public class ManagerClients {
 		}
 	}
 	
+	/**
+	 * This function is for check the prefix of managerID and send this managerID to specific server to check valid or not.
+	 * @param n_managerID
+	 * @return
+	 */
 	public static Boolean checkServerInfo(String n_managerID){
 		DatagramSocket socket = null;
 		String hostname = "127.0.0.1";
@@ -87,20 +105,34 @@ public class ManagerClients {
 		return null; 
 	}
 	
-	public static ClinicServers_Interface getServerReferrence(String managerID) throws Exception{
-		if(managerID.substring(0, 3).equalsIgnoreCase("mtl")){
-			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
-			return (ClinicServers_Interface) registry.lookup("server_mtl");
-		}else if(managerID.substring(0, 3).equalsIgnoreCase("lvl")){
-			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
-			return (ClinicServers_Interface) registry.lookup("server_lvl");
-		}else if(managerID.substring(0, 3).equalsIgnoreCase("ddo")){
-			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
-			return (ClinicServers_Interface) registry.lookup("server_ddo");
-		}
+	/**
+	 * If managerID is valid, this function is for get the stub of that server.
+	 * @param managerID
+	 * @return
+	 * @throws Exception
+	 */
+	public static ClinicServers_Interface getServerReferrence(String managerID){
+		try {
+			if(managerID.substring(0, 3).equalsIgnoreCase("mtl")){
+				Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				return (ClinicServers_Interface) registry.lookup("server_mtl");
+			}else if(managerID.substring(0, 3).equalsIgnoreCase("lvl")){
+				Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				return (ClinicServers_Interface) registry.lookup("server_lvl");
+			}else if(managerID.substring(0, 3).equalsIgnoreCase("ddo")){
+				Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				return (ClinicServers_Interface) registry.lookup("server_ddo");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
 		return null;
 	}
 	
+	/**
+	 * Define the Menu list.
+	 * @param managerID
+	 */
 	public static void showMenu(String managerID) {
 		System.out.println("****Welcome to DSMS****");
 		System.out.println("****Manager: "+managerID +"****\n");

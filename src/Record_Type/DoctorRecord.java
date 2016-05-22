@@ -9,6 +9,16 @@ public class DoctorRecord {
 	private String specialization;
 	private String location;
 	
+	/**
+	 * 
+	 * @param n_firstName
+	 * @param n_lastName
+	 * @param n_address
+	 * @param n_phone
+	 * @param n_specialization
+	 * @param n_location
+	 * Default Constructor of DoctorRecord.
+	 */
 	public DoctorRecord(String n_firstName, String n_lastName, String n_address, String n_phone, String n_specialization, String n_location){
 		this.firstName = n_firstName;
 		this.lastName = n_lastName;
@@ -65,7 +75,7 @@ public class DoctorRecord {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	
+
 	@Override
 	public String toString() {
 		String str = "First Name: "+ getFirstName() + "\n" 

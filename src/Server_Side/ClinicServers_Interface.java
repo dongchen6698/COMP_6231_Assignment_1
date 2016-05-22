@@ -8,5 +8,4 @@ public interface ClinicServers_Interface extends Remote{
 	public String createNRecord(String firstName, String lastName, String designation, String status, String statusDate) throws RemoteException;
 	public String getRecordCounts(String recordType) throws RemoteException;
 	public String editRecord(String recordID, String fielddName, String newValue) throws RemoteException;
-	public String sayHello() throws RemoteException;
 }

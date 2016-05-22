@@ -9,6 +9,11 @@ import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 
+/**
+ * 
+ * @author AlexChen
+ *This is a config file of Server_Laval.
+ */
 public class Config_LVL {
 //	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("LVL10000", "LVL10001", "LVL10002"));
 	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){

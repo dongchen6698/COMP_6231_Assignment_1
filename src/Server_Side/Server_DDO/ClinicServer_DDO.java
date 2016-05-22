@@ -16,6 +16,11 @@ import Record_Type.RecordInfo;
 import Server_Side.NumAssign_Interface;
 import Server_Side.ClinicServers_Interface;
 
+/**
+ * This is Dollard_des_Ormeaux server of DSMS.
+ * @author AlexChen
+ *
+ */
 public class ClinicServer_DDO implements ClinicServers_Interface {
 	
 	public ClinicServer_DDO() {
@@ -108,11 +113,6 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 			}
 		}
 		return "edit failed";
-	}
-	
-	@Override
-	public String sayHello() throws RemoteException {
-		return "Hello";
 	}
 
 	public static void main(String[] args) {

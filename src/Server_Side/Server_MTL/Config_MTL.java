@@ -9,6 +9,11 @@ import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 
+/**
+ * 
+ * @author AlexChen
+ * This is a config file of Server_Montreal.
+ */
 public class Config_MTL {
 	//static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("MTL10000", "MTL10001", "MTL10002"));
 	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){

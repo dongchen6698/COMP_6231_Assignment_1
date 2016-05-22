@@ -16,6 +16,11 @@ import Record_Type.RecordInfo;
 import Server_Side.NumAssign_Interface;
 import Server_Side.ClinicServers_Interface;
 
+/**
+ * This is Laval server of DSMS.
+ * @author AlexChen
+ *
+ */
 public class ClinicServer_LVL implements ClinicServers_Interface {
 	
 	public ClinicServer_LVL() {
@@ -108,11 +113,6 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 			}
 		}
 		return "edit failed";
-	}
-	
-	@Override
-	public String sayHello() throws RemoteException {
-		return "Hello";
 	}
 
 	public static void main(String[] args) {
@@ -210,7 +210,14 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 			return "LVL "+"ALL: "+(dr_num+nr_num);
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @param server_port
+	 * @param recordType
+	 * @return
+	 * This function is for request other 2 server for their count of specific record type.
+	 */
 	public static String sendMessageToOtherServer(int server_port, String recordType){
 		DatagramSocket socket = null;
 		String hostname = "127.0.0.1";

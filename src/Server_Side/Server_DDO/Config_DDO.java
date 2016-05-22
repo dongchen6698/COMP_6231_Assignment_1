@@ -9,6 +9,11 @@ import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 
+/**
+ * 
+ * @author AlexChen
+ *This is a config file of Server_DDO.
+ */
 public class Config_DDO {
 //	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("DDO10000", "DDO10001", "DDO10002"));
 	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){

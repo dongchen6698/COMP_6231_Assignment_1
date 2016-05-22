@@ -7,7 +7,16 @@ public class NurseRecord {
 	private String designation;
 	private String status;
 	private String statusDate;
-	
+
+	/**
+	 * 	
+	 * @param n_firstName
+	 * @param n_lastName
+	 * @param n_designation
+	 * @param n_status
+	 * @param n_statusDate
+	 * Default Constructor of NurseRecord.
+	 */
 	public NurseRecord(String n_firstName, String n_lastName, String n_designation, String n_status, String n_statusDate) {
 		this.firstName = n_firstName;
 		this.lastName = n_lastName;
