@@ -10,7 +10,14 @@ import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 
 public class Config_LVL {
-	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("LVL10000", "LVL10001", "LVL10002"));
+//	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("LVL10000", "LVL10001", "LVL10002"));
+	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){
+		{
+			add("LVL10000");
+			add("LVL10001");
+			add("LVL10002");
+		}
+	};
 	static Map<Character, ArrayList<RecordInfo>> HASH_TABLE = new HashMap<Character, ArrayList<RecordInfo>>(){
 		{
 //			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00005", new DoctorRecord("five", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));

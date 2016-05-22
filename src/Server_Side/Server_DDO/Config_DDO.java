@@ -10,7 +10,14 @@ import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 
 public class Config_DDO {
-	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("DDO10000", "DDO10001", "DDO10002"));
+//	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("DDO10000", "DDO10001", "DDO10002"));
+	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){
+		{
+			add("DDO10000");
+			add("DDO10001");
+			add("DDO10002");
+		}
+	};
 	static Map<Character, ArrayList<RecordInfo>> HASH_TABLE = new HashMap<Character, ArrayList<RecordInfo>>(){
 		{
 //			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00009", new DoctorRecord("nine", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));

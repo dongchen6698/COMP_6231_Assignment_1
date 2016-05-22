@@ -10,7 +10,14 @@ import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 
 public class Config_MTL {
-	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("MTL10000", "MTL10001", "MTL10002"));
+	//static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("MTL10000", "MTL10001", "MTL10002"));
+	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){
+		{
+			add("MTL10000");
+			add("MTL10001");
+			add("MTL10002");
+		}
+	};
 	static Map<Character, ArrayList<RecordInfo>> HASH_TABLE = new HashMap<Character, ArrayList<RecordInfo>>(){
 		{
 			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00001", new DoctorRecord("one", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));
