@@ -17,8 +17,6 @@ import Server_Side.ClinicServers_Interface;
  *
  */
 public class ManagerClients {
-	public static String managerID;
-	public static ClinicServers_Interface stub;
 	
 	public ManagerClients() {
 		super();
@@ -50,8 +48,8 @@ public class ManagerClients {
 			Scanner keyboard = new Scanner(System.in);
 			do{
 				System.out.println("****Please input the manager ID****");
-				managerID = keyboard.next();
-			}while(!checkManagerIDFormat(managerID));
+				Config_Client.MANAGER_ID = keyboard.next();
+			}while(!checkManagerIDFormat(Config_Client.MANAGER_ID));
 			valid = true;
 		}
 	}
@@ -63,16 +61,16 @@ public class ManagerClients {
 	 */
 	public static Boolean checkServerInfo(String n_managerID){
 		DatagramSocket socket = null;
-		String hostname = "127.0.0.1";
+		String hostname = Config_Client.HOST;
 		String requestcode = "001";
 		int serverPort = 0;
 		
-		if(managerID.substring(0, 3).equalsIgnoreCase("mtl")){
-			serverPort = 6001;
-		}else if(managerID.substring(0, 3).equalsIgnoreCase("lvl")){
-			serverPort = 6002;
-		}else if(managerID.substring(0, 3).equalsIgnoreCase("ddo")){
-			serverPort = 6003;
+		if(Config_Client.MANAGER_ID.substring(0, 3).equalsIgnoreCase("mtl")){
+			serverPort = Config_Client.SERVER_PORT_MTL;
+		}else if(Config_Client.MANAGER_ID.substring(0, 3).equalsIgnoreCase("lvl")){
+			serverPort = Config_Client.SERVER_PORT_LVL;
+		}else if(Config_Client.MANAGER_ID.substring(0, 3).equalsIgnoreCase("ddo")){
+			serverPort = Config_Client.SERVER_PORT_DDO;
 		}
 		
 	    try {
@@ -114,13 +112,13 @@ public class ManagerClients {
 	public static ClinicServers_Interface getServerReferrence(String managerID){
 		try {
 			if(managerID.substring(0, 3).equalsIgnoreCase("mtl")){
-				Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				Registry registry = LocateRegistry.getRegistry(Config_Client.HOST, Config_Client.REGISTRY_PORT);
 				return (ClinicServers_Interface) registry.lookup("server_mtl");
 			}else if(managerID.substring(0, 3).equalsIgnoreCase("lvl")){
-				Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				Registry registry = LocateRegistry.getRegistry(Config_Client.HOST, Config_Client.REGISTRY_PORT);
 				return (ClinicServers_Interface) registry.lookup("server_lvl");
 			}else if(managerID.substring(0, 3).equalsIgnoreCase("ddo")){
-				Registry registry = LocateRegistry.getRegistry("127.0.0.1", 1099);
+				Registry registry = LocateRegistry.getRegistry(Config_Client.HOST, Config_Client.REGISTRY_PORT);
 				return (ClinicServers_Interface) registry.lookup("server_ddo");
 			}
 		} catch (Exception e) {
@@ -146,16 +144,16 @@ public class ManagerClients {
 	
 	public static void main(String[] args) {
 		checkManagerLogIn();
-		while(!checkServerInfo(managerID)){
+		while(!checkServerInfo(Config_Client.MANAGER_ID)){
 			System.err.println("ManagerID is not right !\n");
 			checkManagerLogIn();
 		};
 		
 		try {
-			stub = getServerReferrence(managerID);
+			Config_Client.STUB = getServerReferrence(Config_Client.MANAGER_ID);
 			int userChoice=0;
 			Scanner keyboard = new Scanner(System.in);
-			showMenu(managerID);
+			showMenu(Config_Client.MANAGER_ID);
 			
 			while(true)
 			{
@@ -189,9 +187,9 @@ public class ManagerClients {
 					String d_specialization = keyboard.next();
 					System.out.println("Please input the Location(mtl,lvl,ddo)");
 					String d_location =keyboard.next();
-					String d_result = stub.createDRecord(d_firstname, d_lastname, d_address, d_phone, d_specialization, d_location);
+					String d_result = Config_Client.STUB.createDRecord(d_firstname, d_lastname, d_address, d_phone, d_specialization, d_location);
 					System.out.println(d_result);
-					showMenu(managerID);
+					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 2:
 					System.out.println("Please input the FirstName");
@@ -204,16 +202,16 @@ public class ManagerClients {
 					String n_status = keyboard.next();
 					System.out.println("Please input the Status Date(yyyy/mm/dd/)");
 					String n_status_date = keyboard.next();
-					String result = stub.createNRecord(n_firstname, n_lastname, n_designation, n_status, n_status_date);
+					String result = Config_Client.STUB.createNRecord(n_firstname, n_lastname, n_designation, n_status, n_status_date);
 					System.out.println(result);
-					showMenu(managerID);
+					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 3:
 					System.out.println("Please input search type");
 					String searchtype = keyboard.next();
-					String s_result = stub.getRecordCounts(searchtype);
+					String s_result = Config_Client.STUB.getRecordCounts(searchtype);
 					System.out.println(s_result);
-					showMenu(managerID);
+					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 4:
 					System.out.println("Please input the RecordID");
@@ -222,9 +220,9 @@ public class ManagerClients {
 					String fieldname = keyboard.next();
 					System.out.println("Please input the New Value");
 					String newvalue = keyboard.next();
-					String e_result = stub.editRecord(recordID, fieldname, newvalue);
+					String e_result = Config_Client.STUB.editRecord(recordID, fieldname, newvalue);
 					System.out.println(e_result);
-					showMenu(managerID);
+					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 5:
 					System.out.println("Have a nice day!");
