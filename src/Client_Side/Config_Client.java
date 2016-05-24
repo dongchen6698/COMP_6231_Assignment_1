@@ -5,6 +5,11 @@ import java.util.logging.Logger;
 
 import Server_Side.ClinicServers_Interface;
 
+/**
+ * this is configuration class
+ * @author jpl19
+ *
+ */
 public class Config_Client {
 	static String MANAGER_ID = null;
 	static ClinicServers_Interface STUB;

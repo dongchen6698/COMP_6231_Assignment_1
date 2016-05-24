@@ -7,14 +7,26 @@ import java.rmi.server.UnicastRemoteObject;
 
 import Server_Side.NumAssign_Interface;
 
+/**
+ * this class is implements a interface of NumAssign_Interface
+ * @author peilin
+ *
+ */
 public class NumAssign implements NumAssign_Interface {
 	public static int startNumber = 10000;
 	
+	/**
+	 * this method is get the number of the ID
+	 * @return int
+	 */
 	@Override
 	public synchronized int getSartNumber() throws RemoteException {
 		return startNumber++;
 	}
 	
+	/**
+	 * Export server object.
+	 */
 	public static void exportServerObj(){
 		try {
 			String server_name = "NumberAssign";

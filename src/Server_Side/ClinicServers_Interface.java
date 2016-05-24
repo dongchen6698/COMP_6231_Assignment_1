@@ -3,6 +3,11 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.Date;
 
+/**
+ * this is a interface
+ * @author peilin
+ *
+ */
 public interface ClinicServers_Interface extends Remote{
 	public String createDRecord(String firstName, String lastName, String address, String phone, String specialization, String location) throws RemoteException;
 	public String createNRecord(String firstName, String lastName, String designation, String status, String statusDate) throws RemoteException;

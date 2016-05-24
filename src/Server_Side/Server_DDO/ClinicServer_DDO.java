@@ -28,10 +28,16 @@ import Server_Side.ClinicServers_Interface;
  */
 public class ClinicServer_DDO implements ClinicServers_Interface {
 	
+	/**
+	 * this is a constructor of the class
+	 */
 	public ClinicServer_DDO() {
 		super();
 	}
 	
+	/**
+	 * this method is create a doctor record
+	 */
 	@Override
 	public String createDRecord(String firstName, String lastName, String address, String phone,
 			String specialization, String location) throws RemoteException {
@@ -55,7 +61,9 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
 		return "Doctor Record Buid Succeed !" + "\n" +doc_recorde_with_recordID.toString();
 	}
-
+	/**
+	 * this method is create a nurse record
+	 */
 	@Override
 	public String createNRecord(String firstName, String lastName, String designation, String status,
 			String statusDate) throws RemoteException {
@@ -79,7 +87,10 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());
 		return "Nurse Record Buid Succeed !" + "\n" +nur_recorde_with_recordID.toString();
 	}
-
+	
+	/**
+	 * this method is getting the count of the doctor or the nurse record
+	 */
 	@Override
 	public String getRecordCounts(String recordType) throws RemoteException {
 		String lvl_hash_size = sendMessageToOtherServer(Config_DDO.SERVER_PORT_LVL, recordType);
@@ -89,7 +100,10 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " search RecordCounts: "+ "\n" + result);
 		return result;
 	}
-
+	
+	/**
+	 * this method is editting the record of a doctor or a nurse
+	 */
 	@Override
 	public String editRecord(String recordID, String fieldName, String newValue) throws RemoteException {
 		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:Config_DDO.HASH_TABLE.entrySet()){
@@ -137,6 +151,10 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		openUDPListener();
 	}
 	
+	/**
+	 * Initial the Logger function.
+	 * @param server_name
+	 */
 	public static void initLogger(String server_name){
 		try {
 			String dir = "Server_Side_Log/";
@@ -152,7 +170,12 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 			e.printStackTrace();
 		}
 	}
-		
+	
+	/**
+	 * Check ManagerID and return valid or invalid.
+	 * @param managerID
+	 * @return
+	 */
 	public static String checkManagerID(String managerID){
 		for(String account: Config_DDO.MANAGER_ACCOUNT){
 			if(account.equalsIgnoreCase(managerID)){
@@ -163,6 +186,10 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		return "invalid";
 	}
 	
+	/**
+	 * Get the stub of Number Assign server
+	 * @return
+	 */
 	public static NumAssign_Interface getNumAssignStub(){
 		try {
 			Registry registry = LocateRegistry.getRegistry();
@@ -174,6 +201,9 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		return null;	
 	}
 		
+	/**
+	 * Export server object.
+	 */
 	public static void exportServerObject(){
 		try {
 			String server_name = Config_DDO.SERVER_NAME;
@@ -187,6 +217,11 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		}	
 	}
 	
+	/**
+	 * Open UDP listening port to check ManagerID and receive the other server request to get local hash table size.
+	 * Request 001 for check ManagerID
+	 * Request 002 for get local hash table size
+	 */
 	public static void openUDPListener(){
 		DatagramSocket socket = null;
 		String result = null;
@@ -217,6 +252,11 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		}	
 	}
 	
+	/**
+	 * Check local hash table size and return the value.
+	 * @param recordType
+	 * @return
+	 */
 	public static String getLocalHashSize(String recordType){
 		int dr_num = 0;
 		int nr_num = 0;
@@ -242,6 +282,13 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		}
 	}
 	
+	/**
+	 * This function is for request other 2 server for their count of specific record type.
+	 * @param server_port
+	 * @param recordType
+	 * @return
+	 * 
+	 */
 	public static String sendMessageToOtherServer(int server_port, String recordType){
 		DatagramSocket socket = null;
 		String hostname = "127.0.0.1";

@@ -23,6 +23,9 @@ import Server_Side.ClinicServers_Interface;
  */
 public class ManagerClients {
 	
+	/**
+	 * this is a constructor of the class
+	 */
 	public ManagerClients() {
 		super();
 	}
@@ -147,6 +150,10 @@ public class ManagerClients {
 		System.out.println("5. Exit DSMS");
 	}
 	
+	/**
+	 * Initial the Logger function.
+	 * @param server_name
+	 */
 	public static void initLogger(String managerID){
 		try {
 			String dir = "Client_Side_Log/";

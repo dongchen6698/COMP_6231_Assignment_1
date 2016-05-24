@@ -28,10 +28,16 @@ import Server_Side.ClinicServers_Interface;
  */
 public class ClinicServer_MTL implements ClinicServers_Interface {
 	
+	/**
+	 * This is a constructor of the class
+	 */
 	public ClinicServer_MTL() {
 		super();
 	}
-
+	
+	/**
+	 * this method is create a doctor record
+	 */
 	@Override
 	public String createDRecord(String firstName, String lastName, String address, String phone,
 			String specialization, String location) throws RemoteException {
@@ -55,7 +61,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
 		return "Doctor Record Buid Succeed !" + "\n" +doc_recorde_with_recordID.toString();
 	}
-
+	
+	/**
+	 * this method is create a nurse record
+	 */
 	@Override
 	public String createNRecord(String firstName, String lastName, String designation, String status,
 			String statusDate) throws RemoteException {
@@ -79,7 +88,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());
 		return "Nurse Record Buid Succeed !" + "\n" +nur_recorde_with_recordID.toString();
 	}
-
+	
+	/**
+	 * this method is get the counts of the doctor or nurse record
+	 */
 	@Override
 	public String getRecordCounts(String recordType) throws RemoteException {
 		String lvl_hash_size = sendMessageToOtherServer(Config_MTL.SERVER_PORT_LVL, recordType);
@@ -89,7 +101,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " search RecordCounts: "+ "\n" + result);
 		return result;
 	}
-
+	
+	/**
+	 * this method is edit the record of a doctor or a nurse 
+	 */
 	@Override
 	public String editRecord(String recordID, String fieldName, String newValue) throws RemoteException {
 		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:Config_MTL.HASH_TABLE.entrySet()){
@@ -272,11 +287,11 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	}
 
 	/**
-	 * 
+	 * This function is for request other 2 server for their count of specific record type.
 	 * @param server_port
 	 * @param recordType
 	 * @return
-	 * This function is for request other 2 server for their count of specific record type.
+	 * 
 	 */
 	public static String sendMessageToOtherServer(int server_port, String recordType){
 		DatagramSocket socket = null;
