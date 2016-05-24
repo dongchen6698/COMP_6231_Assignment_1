@@ -1,11 +1,16 @@
 package Client_Side;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -134,12 +139,28 @@ public class ManagerClients {
 	public static void showMenu(String managerID) {
 		System.out.println("****Welcome to DSMS****");
 		System.out.println("****Manager: "+managerID +"****\n");
-		System.out.println("Please select an option (1-4)");
+		System.out.println("Please select an option (1-5)");
 		System.out.println("1. Create Doctor Record.");
 		System.out.println("2. Create Nurse Record");
 		System.out.println("3. Get Record Counts");
 		System.out.println("4. Edit Record");
 		System.out.println("5. Exit DSMS");
+	}
+	
+	public static void initLogger(String managerID){
+		try {
+			String dir = "Client_Side_Log/";
+			Config_Client.LOGGER = Logger.getLogger(ManagerClients.class.getName());
+			Config_Client.LOGGER.setUseParentHandlers(false);
+			Config_Client.FH = new FileHandler(dir+managerID+".log",true);
+			Config_Client.LOGGER.addHandler(Config_Client.FH);
+			SimpleFormatter formatter = new SimpleFormatter();
+			Config_Client.FH.setFormatter(formatter);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void main(String[] args) {
@@ -148,6 +169,8 @@ public class ManagerClients {
 			System.err.println("ManagerID is not right !\n");
 			checkManagerLogIn();
 		};
+		initLogger(Config_Client.MANAGER_ID);
+		Config_Client.LOGGER.info("ManagerID: "+ Config_Client.MANAGER_ID + " log in DSMS.");
 		
 		try {
 			Config_Client.STUB = getServerReferrence(Config_Client.MANAGER_ID);
@@ -175,6 +198,7 @@ public class ManagerClients {
 				switch(userChoice)
 				{
 				case 1: 
+					Config_Client.LOGGER.info("Manager Choose Creat Doctor Record.");
 					System.out.println("Please input the FirstName");
 					String d_firstname = keyboard.next();
 					System.out.println("Please input the LastName");
@@ -189,9 +213,11 @@ public class ManagerClients {
 					String d_location =keyboard.next();
 					String d_result = Config_Client.STUB.createDRecord(d_firstname, d_lastname, d_address, d_phone, d_specialization, d_location);
 					System.out.println(d_result);
+					Config_Client.LOGGER.info("Manager Creat Doctor Record Succeed!" + "\n" + d_result);
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 2:
+					Config_Client.LOGGER.info("Manager Choose Creat Nurse Record.");
 					System.out.println("Please input the FirstName");
 					String n_firstname = keyboard.next();
 					System.out.println("Please input the LastName");
@@ -202,18 +228,22 @@ public class ManagerClients {
 					String n_status = keyboard.next();
 					System.out.println("Please input the Status Date(yyyy/mm/dd/)");
 					String n_status_date = keyboard.next();
-					String result = Config_Client.STUB.createNRecord(n_firstname, n_lastname, n_designation, n_status, n_status_date);
-					System.out.println(result);
+					String n_result = Config_Client.STUB.createNRecord(n_firstname, n_lastname, n_designation, n_status, n_status_date);
+					System.out.println(n_result);
+					Config_Client.LOGGER.info("Manager Creat Nurse Record Succeed!" + "\n" + n_result);
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 3:
+					Config_Client.LOGGER.info("Manager Choose Get Record Counts.");
 					System.out.println("Please input search type");
 					String searchtype = keyboard.next();
 					String s_result = Config_Client.STUB.getRecordCounts(searchtype);
 					System.out.println(s_result);
+					Config_Client.LOGGER.info("Get Record Counts: " + "\n" + s_result);
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 4:
+					Config_Client.LOGGER.info("Manager Choose Edit Record.");
 					System.out.println("Please input the RecordID");
 					String recordID = keyboard.next();
 					System.out.println("Please input the FieldName");
@@ -222,9 +252,11 @@ public class ManagerClients {
 					String newvalue = keyboard.next();
 					String e_result = Config_Client.STUB.editRecord(recordID, fieldname, newvalue);
 					System.out.println(e_result);
+					Config_Client.LOGGER.info("Manager Edit Record Succeed!" + "\n" + e_result);
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 5:
+					Config_Client.LOGGER.info("Manager Exit the DSMS");
 					System.out.println("Have a nice day!");
 					keyboard.close();
 					System.exit(0);

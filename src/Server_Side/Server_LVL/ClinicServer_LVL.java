@@ -1,5 +1,6 @@
 package Server_Side.Server_LVL;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -9,7 +10,11 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
+import Client_Side.ManagerClients;
 import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
@@ -47,6 +52,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 		synchronized (this) {
 			Config_LVL.HASH_TABLE.put(capital_lastname, Config_LVL.RECORD_LIST);
 		}
+		Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
 		return "Doctor Record Buid Succeed !" + "\n" +doc_recorde_with_recordID.toString();
 	}
 
@@ -70,6 +76,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 		synchronized (this) {
 			Config_LVL.HASH_TABLE.put(capital_lastname, Config_LVL.RECORD_LIST);
 		}
+		Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());
 		return "Nurse Record Buid Succeed !" + "\n" +nur_recorde_with_recordID.toString();
 	}
 
@@ -78,7 +85,9 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 		String lvl_hash_size = getLocalHashSize(recordType);
 		String ddo_hash_size = sendMessageToOtherServer(Config_LVL.SERVER_PORT_DDO, recordType);
 		String mtl_hash_size = sendMessageToOtherServer(Config_LVL.SERVER_PORT_MTL, recordType);
-		return mtl_hash_size + "\n" + lvl_hash_size + "\n" + ddo_hash_size + "\n";
+		String result = mtl_hash_size + "\n" + lvl_hash_size + "\n" + ddo_hash_size + "\n";
+		Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " search RecordCounts: "+ "\n" + result);
+		return result;
 	}
 
 	@Override
@@ -86,28 +95,32 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:Config_LVL.HASH_TABLE.entrySet()){
 			for(RecordInfo record:entry.getValue()){
 				if(recordID.equalsIgnoreCase(record.getRecordID())){
-					if(recordID.contains("DR")||recordID.contains("dr")){
-						if(fieldName.equalsIgnoreCase("Address")){
-							record.getDoctorRecord().setAddress(newValue);
-							return "edit succeed !\n"+record.toString();
-						}else if(fieldName.equalsIgnoreCase("Phone")){
-							record.getDoctorRecord().setPhone(newValue);
-							return "edit succeed !\n"+record.toString();
-						}else if (fieldName.equalsIgnoreCase("Location")){
-							record.getDoctorRecord().setLocation(newValue);
-							return "edit succeed !\n"+record.toString();
-						}
-					}else if(recordID.contains("NR")||recordID.contains("nr")){
-						if(fieldName.equalsIgnoreCase("Designation")){
-							record.getNurseRecord().setDesignation(newValue);
-							return "edit succeed !\n"+record.toString();
-						}else if(fieldName.equalsIgnoreCase("Status")){
-							record.getNurseRecord().setStatus(newValue);
-							return "edit succeed !\n"+record.toString();
-						}else if (fieldName.equalsIgnoreCase("statusDate")){
-							record.getNurseRecord().setStatusDate(newValue);
-							return "edit succeed !\n"+record.toString();
-						}
+					if(fieldName.equalsIgnoreCase("Address")){
+						record.getDoctorRecord().setAddress(newValue);
+						Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " edit the Address of Doctor Record: "+ "\n" + record.toString());
+						return "edit succeed !\n"+record.toString();
+					}else if(fieldName.equalsIgnoreCase("Phone")){
+						record.getDoctorRecord().setPhone(newValue);
+						Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " edit the phone of Doctor Record: "+ "\n" + record.toString());
+						return "edit succeed !\n"+record.toString();
+					}else if (fieldName.equalsIgnoreCase("Location")){
+						record.getDoctorRecord().setLocation(newValue);
+						Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " edit the Location of Doctor Record: "+ "\n" + record.toString());
+						return "edit succeed !\n"+record.toString();
+					}
+				}else if(recordID.contains("NR")||recordID.contains("nr")){
+					if(fieldName.equalsIgnoreCase("Designation")){
+						record.getNurseRecord().setDesignation(newValue);
+						Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " edit the Designation of Nurse Record: "+ "\n" + record.toString());
+						return "edit succeed !\n"+record.toString();
+					}else if(fieldName.equalsIgnoreCase("Status")){
+						record.getNurseRecord().setStatus(newValue);
+						Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " edit the Status of Nurse Record: "+ "\n" + record.toString());
+						return "edit succeed !\n"+record.toString();
+					}else if (fieldName.equalsIgnoreCase("statusDate")){
+						record.getNurseRecord().setStatusDate(newValue);
+						Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " edit the Status date of Nurse Record: "+ "\n" + record.toString());
+						return "edit succeed !\n"+record.toString();
 					}
 				}
 			}
@@ -116,16 +129,34 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 	}
 
 	public static void main(String[] args) {
+		initLogger(Config_LVL.SERVER_NAME);
 //		if(System.getSecurityManager() == null){
 //			System.setSecurityManager(new SecurityManager());
 //		}
 		exportServerObject();
 		openUDPListener();
 	}
+	
+	public static void initLogger(String server_name){
+		try {
+			String dir = "Server_Side_Log/";
+			Config_LVL.LOGGER = Logger.getLogger(ManagerClients.class.getName());
+			Config_LVL.LOGGER.setUseParentHandlers(false);
+			Config_LVL.FH = new FileHandler(dir+server_name+".log",true);
+			Config_LVL.LOGGER.addHandler(Config_LVL.FH);
+			SimpleFormatter formatter = new SimpleFormatter();
+			Config_LVL.FH.setFormatter(formatter);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 		
 	public static String checkManagerID(String managerID){
 		for(String account: Config_LVL.MANAGER_ACCOUNT){
 			if(account.equalsIgnoreCase(managerID)){
+				Config_LVL.MANAGER_ID = managerID;
 				return "valid";
 			}
 		}

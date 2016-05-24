@@ -1,0 +1,26 @@
+May 24, 2016 3:09:24 PM Server_Side.Server_MTL.ClinicServer_MTL createDRecord
+INFO: Manager: mtl10001Creat Doctor Record: 
+RecordID: DR10000
+First Name: dong
+Last Name: chen
+Address: montreal
+Phone:12345678
+specialization: abc
+location: mtl
+
+May 24, 2016 3:09:32 PM Server_Side.Server_MTL.ClinicServer_MTL getRecordCounts
+INFO: Manager: mtl10001search RecordCounts: 
+MTL DR: 3
+LVL DR: 0
+DDO DR: 1
+
+May 24, 2016 3:09:53 PM Server_Side.Server_MTL.ClinicServer_MTL editRecord
+INFO: Manager: mtl10001edit the phone of Doctor Record: 
+RecordID: DR10000
+First Name: dong
+Last Name: chen
+Address: montreal
+Phone:123
+specialization: abc
+location: mtl
+

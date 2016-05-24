@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
@@ -31,10 +33,13 @@ public class Config_LVL {
 			put('H', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00008", new NurseRecord("eight", "Hu", "junior", "active", "2016/09/12")))));
 		}
 	};
+	static String MANAGER_ID = null;
 	static ArrayList<RecordInfo> RECORD_LIST = null;
 	static int REGISTRY_PORT = 1099;
 	static String SERVER_NAME = "server_lvl";
 	static int LOCAL_LISTENING_PORT = 6002;
+	static Logger LOGGER = null;
+	static FileHandler FH = null;
 	
 	static int SERVER_PORT_MTL = 6001;
 	static int SERVER_PORT_LVL = 6002;

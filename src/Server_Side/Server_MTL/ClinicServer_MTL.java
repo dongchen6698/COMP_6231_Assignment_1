@@ -1,5 +1,6 @@
 package Server_Side.Server_MTL;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -9,7 +10,11 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
+import Client_Side.ManagerClients;
 import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
@@ -26,7 +31,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	public ClinicServer_MTL() {
 		super();
 	}
-	
+
 	@Override
 	public String createDRecord(String firstName, String lastName, String address, String phone,
 			String specialization, String location) throws RemoteException {
@@ -47,6 +52,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		synchronized (this) {
 			Config_MTL.HASH_TABLE.put(capital_lastname, Config_MTL.RECORD_LIST);
 		}
+		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
 		return "Doctor Record Buid Succeed !" + "\n" +doc_recorde_with_recordID.toString();
 	}
 
@@ -70,6 +76,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		synchronized (this) {
 			Config_MTL.HASH_TABLE.put(capital_lastname, Config_MTL.RECORD_LIST);
 		}
+		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());
 		return "Nurse Record Buid Succeed !" + "\n" +nur_recorde_with_recordID.toString();
 	}
 
@@ -78,7 +85,9 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		String lvl_hash_size = sendMessageToOtherServer(Config_MTL.SERVER_PORT_LVL, recordType);
 		String ddo_hash_size = sendMessageToOtherServer(Config_MTL.SERVER_PORT_DDO, recordType);
 		String mtl_hash_size = getLocalHashSize(recordType);
-		return mtl_hash_size + "\n" + lvl_hash_size + "\n" + ddo_hash_size + "\n";
+		String result = mtl_hash_size + "\n" + lvl_hash_size + "\n" + ddo_hash_size + "\n";
+		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " search RecordCounts: "+ "\n" + result);
+		return result;
 	}
 
 	@Override
@@ -89,25 +98,32 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 					if(recordID.contains("DR")||recordID.contains("dr")){
 						if(fieldName.equalsIgnoreCase("Address")){
 							record.getDoctorRecord().setAddress(newValue);
+							Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " edit the Address of Doctor Record: "+ "\n" + record.toString());
 							return "edit succeed !\n"+record.toString();
 						}else if(fieldName.equalsIgnoreCase("Phone")){
 							record.getDoctorRecord().setPhone(newValue);
+							Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " edit the phone of Doctor Record: "+ "\n" + record.toString());
 							return "edit succeed !\n"+record.toString();
 						}else if (fieldName.equalsIgnoreCase("Location")){
 							record.getDoctorRecord().setLocation(newValue);
+							Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " edit the Location of Doctor Record: "+ "\n" + record.toString());
 							return "edit succeed !\n"+record.toString();
 						}
 					}else if(recordID.contains("NR")||recordID.contains("nr")){
 						if(fieldName.equalsIgnoreCase("Designation")){
 							record.getNurseRecord().setDesignation(newValue);
+							Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " edit the Designation of Nurse Record: "+ "\n" + record.toString());
 							return "edit succeed !\n"+record.toString();
 						}else if(fieldName.equalsIgnoreCase("Status")){
 							record.getNurseRecord().setStatus(newValue);
+							Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " edit the Status of Nurse Record: "+ "\n" + record.toString());
 							return "edit succeed !\n"+record.toString();
 						}else if (fieldName.equalsIgnoreCase("statusDate")){
 							record.getNurseRecord().setStatusDate(newValue);
+							Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " edit the Status date of Nurse Record: "+ "\n" + record.toString());
 							return "edit succeed !\n"+record.toString();
 						}
+						
 					}
 				}
 			}
@@ -116,22 +132,53 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	}
 
 	public static void main(String[] args) {
+		initLogger(Config_MTL.SERVER_NAME);
 //		if(System.getSecurityManager() == null){
 //			System.setSecurityManager(new SecurityManager());
 //		}
 		exportServerObject();
 		openUDPListener();
 	}
+	
+	/**
+	 * Initial the Logger function.
+	 * @param server_name
+	 */
+	public static void initLogger(String server_name){
+		try {
+			String dir = "Server_Side_Log/";
+			Config_MTL.LOGGER = Logger.getLogger(ManagerClients.class.getName());
+			Config_MTL.LOGGER.setUseParentHandlers(false);
+			Config_MTL.FH = new FileHandler(dir+server_name+".log",true);
+			Config_MTL.LOGGER.addHandler(Config_MTL.FH);
+			SimpleFormatter formatter = new SimpleFormatter();
+			Config_MTL.FH.setFormatter(formatter);
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 		
+	/**
+	 * Check ManagerID and return valid or invalid.
+	 * @param managerID
+	 * @return
+	 */
 	public static String checkManagerID(String managerID){
 		for(String account: Config_MTL.MANAGER_ACCOUNT){
 			if(account.equalsIgnoreCase(managerID)){
+				Config_MTL.MANAGER_ID = managerID;
 				return "valid";
 			}
 		}
 		return "invalid";
 	}
 	
+	/**
+	 * Get the stub of Number Assign server
+	 * @return
+	 */
 	public static NumAssign_Interface getNumAssignStub(){
 		try {
 			Registry registry = LocateRegistry.getRegistry();
@@ -142,7 +189,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		}
 		return null;	
 	}
-		
+	
+	/**
+	 * Export server object.
+	 */
 	public static void exportServerObject(){
 		try {
 			String server_name = Config_MTL.SERVER_NAME;
@@ -156,6 +206,11 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		}	
 	}
 	
+	/**
+	 * Open UDP listening port to check ManagerID and receive the other server request to get local hash table size.
+	 * Request 001 for check ManagerID
+	 * Request 002 for get local hash table size
+	 */
 	public static void openUDPListener(){
 		DatagramSocket socket = null;
 		String result = null;
@@ -186,6 +241,11 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		}	
 	}
 	
+	/**
+	 * Check local hash table size and return the value.
+	 * @param recordType
+	 * @return
+	 */
 	public static String getLocalHashSize(String recordType){
 		int dr_num = 0;
 		int nr_num = 0;

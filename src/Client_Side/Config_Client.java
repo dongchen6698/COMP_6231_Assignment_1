@@ -14,6 +14,6 @@ public class Config_Client {
 	static int SERVER_PORT_LVL = 6002;
 	static int SERVER_PORT_DDO = 6003;
 	
-	static Logger LOGGER = Logger.getLogger(ManagerClients.class.getName());
-	static FileHandler FH;
+	static Logger LOGGER = null;
+	static FileHandler FH = null;
 }
