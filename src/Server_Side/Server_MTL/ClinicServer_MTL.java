@@ -148,9 +148,6 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 
 	public static void main(String[] args) {
 		initLogger(Config_MTL.SERVER_NAME);
-//		if(System.getSecurityManager() == null){
-//			System.setSecurityManager(new SecurityManager());
-//		}
 		exportServerObject();
 		openUDPListener();
 	}
@@ -213,8 +210,8 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 			String server_name = Config_MTL.SERVER_NAME;
 			ClinicServers_Interface obj = new ClinicServer_MTL();
 			ClinicServers_Interface stub = (ClinicServers_Interface) UnicastRemoteObject.exportObject(obj, 0);
-			Registry registry = LocateRegistry.getRegistry(Config_MTL.REGISTRY_PORT);
-	        registry.rebind(server_name, stub);
+			Registry registry = LocateRegistry.getRegistry();
+	        registry.bind(server_name, stub);
 	        System.out.println("ClinicServer_MTL bound");
 		} catch (Exception e) {
 			e.printStackTrace();

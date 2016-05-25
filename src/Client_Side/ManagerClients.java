@@ -171,6 +171,9 @@ public class ManagerClients {
 	}
 	
 	public static void main(String[] args) {
+		if(System.getSecurityManager() == null){
+			System.setSecurityManager(new SecurityManager());
+		}
 		checkManagerLogIn();
 		while(!checkServerInfo(Config_Client.MANAGER_ID)){
 			System.err.println("ManagerID is not right !\n");

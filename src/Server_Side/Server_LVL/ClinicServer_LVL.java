@@ -146,9 +146,6 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 
 	public static void main(String[] args) {
 		initLogger(Config_LVL.SERVER_NAME);
-//		if(System.getSecurityManager() == null){
-//			System.setSecurityManager(new SecurityManager());
-//		}
 		exportServerObject();
 		openUDPListener();
 	}

@@ -137,7 +137,7 @@ public class DoctorRecord {
 		String str = "First Name: "+ getFirstName() + "\n" 
 					+ "Last Name: " + getLastName() + "\n"
 					+ "Address: " + getAddress() + "\n"
-					+ "Phone:" + getPhone() + "\n"
+					+ "Phone: " + getPhone() + "\n"
 					+ "specialization: " + getSpecialization() + "\n"
 					+ "location: " + getLocation() + "\n";
 		return str;

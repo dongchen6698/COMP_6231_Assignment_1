@@ -24,3 +24,32 @@ Phone:123
 specialization: abc
 location: mtl
 
+May 24, 2016 9:29:07 PM Server_Side.Server_MTL.ClinicServer_MTL createDRecord
+INFO: Manager: mtl10001 Creat Doctor Record: 
+RecordID: DR10000
+First Name: dong
+Last Name: chen
+Address: montreal
+Phone:123
+specialization: abc
+location: mtl
+
+May 24, 2016 9:29:25 PM Server_Side.Server_MTL.ClinicServer_MTL createDRecord
+INFO: Manager: mtl10001 Creat Doctor Record: 
+RecordID: DR10001
+First Name: peilin
+Last Name: jiang
+Address: montreal
+Phone:123123
+specialization: ac
+location: lvl
+
+May 24, 2016 9:29:46 PM Server_Side.Server_MTL.ClinicServer_MTL createNRecord
+INFO: Manager: mtl10001 Creat Nurse Record: 
+RecordID: NR10002
+First Name: chen
+Last Name: dong
+Designation: junior
+Status:active
+StatusDate1990/07/09
+

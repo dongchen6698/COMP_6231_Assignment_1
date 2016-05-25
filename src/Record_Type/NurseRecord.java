@@ -117,8 +117,8 @@ public class NurseRecord {
 		String str = "First Name: "+ getFirstName() + "\n" 
 				+ "Last Name: " + getLastName() + "\n"
 				+ "Designation: " + getDesignation() + "\n"
-				+ "Status:" + getStatus() + "\n"
-				+ "StatusDate" + getStatusDate() + "\n";
+				+ "Status: " + getStatus() + "\n"
+				+ "StatusDate: " + getStatusDate() + "\n";
 		return str;
 	}
 	

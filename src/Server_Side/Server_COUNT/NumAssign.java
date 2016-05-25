@@ -37,8 +37,7 @@ public class NumAssign implements NumAssign_Interface {
 	        System.out.println("Number Assign Server bound");
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		
+		}	
 	}
 	
 	public static void main(String[] args){
