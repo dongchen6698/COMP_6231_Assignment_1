@@ -19,6 +19,7 @@ import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 import Server_Side.NumAssign_Interface;
+import Server_Side.Server_DDO.Config_DDO;
 import Server_Side.ClinicServers_Interface;
 
 /**
@@ -95,9 +96,10 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 	 */
 	@Override
 	public String getRecordCounts(String recordType) throws RemoteException {
+		System.out.println(recordType);
 		String lvl_hash_size = getLocalHashSize(recordType);
-		String ddo_hash_size = sendMessageToOtherServer(Config_LVL.SERVER_PORT_DDO, recordType);
 		String mtl_hash_size = sendMessageToOtherServer(Config_LVL.SERVER_PORT_MTL, recordType);
+		String ddo_hash_size = sendMessageToOtherServer(Config_LVL.SERVER_PORT_DDO, recordType);
 		String result = mtl_hash_size + "\n" + lvl_hash_size + "\n" + ddo_hash_size + "\n";
 		Config_LVL.LOGGER.info("Manager: "+ Config_LVL.MANAGER_ID + " search RecordCounts: "+ "\n" + result);
 		return result;
@@ -222,32 +224,59 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 	 */
 	public static void openUDPListener(){
 		DatagramSocket socket = null;
-		String result = null;
 		try{
-			socket = new DatagramSocket(Config_LVL.LOCAL_LISTENING_PORT); 
-			byte[] buffer = new byte[100]; 
+			socket = new DatagramSocket(Config_LVL.LOCAL_LISTENING_PORT);
 			while(true){
+				byte[] buffer = new byte[100];
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length); 
 				socket.receive(request);
-				String requestcode = new String(request.getData()).trim().substring(0, 3);
-				switch (requestcode) {
-				case "001":
-					result = checkManagerID(new String(request.getData()).trim().substring(3));
-					break;
-				case "002":
-					result = getLocalHashSize(new String(request.getData()).trim().substring(3));
-					break;
-				}
-				DatagramPacket reply = new DatagramPacket(result.getBytes(),result.getBytes().length, request.getAddress(), request.getPort()); 
-				socket.send(reply);
+				Config_LVL.LOGGER.info("Get request: " + (new String(request.getData()).trim())+ "\n" + "Start a new thread to handle this.");
+				new Connection(socket, request);
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
-		} 
+		}
 		finally{
 			if(socket != null) socket.close();
-		}	
+		}
+	}
+	
+	/**
+	 * New thread to handle the newly request
+	 * @author AlexChen
+	 *
+	 */
+	static class Connection extends Thread{
+		DatagramSocket socket = null;
+		DatagramPacket request = null;
+		String result = null;
+		public Connection(DatagramSocket n_socket, DatagramPacket n_request) {
+			this.socket = n_socket;
+			this.request = n_request;
+			String requestcode = new String(request.getData()).trim().substring(0, 3);
+			switch (requestcode) {
+			case "001":
+				Config_LVL.LOGGER.info("Request code: " + requestcode + "\n" + "ManagerID: " + (new String(request.getData()).trim().substring(3)));
+				result = checkManagerID(new String(request.getData()).trim().substring(3));
+				break;
+			case "002":
+				Config_LVL.LOGGER.info("Request code: " + requestcode + "\n" + "SearchType: " + (new String(request.getData()).trim().substring(3)));
+				result = getLocalHashSize(new String(request.getData()).trim().substring(3));
+				break;
+			}
+			this.start();
+		}
+		
+		@Override
+		public void run() {
+			try {
+				DatagramPacket reply = new DatagramPacket(result.getBytes(),result.getBytes().length, request.getAddress(), request.getPort()); 
+				socket.send(reply);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -274,7 +303,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 		if(recordType.equalsIgnoreCase("dr")){
 			return "LVL "+"DR: "+dr_num;
 		}else if(recordType.equalsIgnoreCase("nr")){
-			return "LVL "+"NR: "+dr_num;
+			return "LVL "+"NR: "+nr_num;
 		}else{
 			return "LVL "+"ALL: "+(dr_num+nr_num);
 		}

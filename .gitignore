@@ -1,2 +1,9 @@
 *.class
 *.class
+<<<<<<< HEAD
+/bin/
+=======
+*.lck
+>>>>>>> origin/Versioin_2
+
+*.log

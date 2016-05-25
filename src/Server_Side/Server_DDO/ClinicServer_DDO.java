@@ -221,32 +221,59 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 	 */
 	public static void openUDPListener(){
 		DatagramSocket socket = null;
-		String result = null;
 		try{
-			socket = new DatagramSocket(Config_DDO.LOCAL_LISTENING_PORT); 
-			byte[] buffer = new byte[100]; 
+			socket = new DatagramSocket(Config_DDO.LOCAL_LISTENING_PORT);
 			while(true){
+				byte[] buffer = new byte[100]; 
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length); 
 				socket.receive(request);
-				String requestcode = new String(request.getData()).trim().substring(0, 3);
-				switch (requestcode) {
-				case "001":
-					result = checkManagerID(new String(request.getData()).trim().substring(3));
-					break;
-				case "002":
-					result = getLocalHashSize(new String(request.getData()).trim().substring(3));
-					break;
-				}
-				DatagramPacket reply = new DatagramPacket(result.getBytes(),result.getBytes().length, request.getAddress(), request.getPort()); 
-				socket.send(reply);
+				Config_DDO.LOGGER.info("Get request: " + (new String(request.getData()).trim())+ "\n" + "Start a new thread to handle this.");
+				new Connection(socket, request);
 			}
 		}
 		catch(Exception e){
 			e.printStackTrace();
-		} 
+		}
 		finally{
 			if(socket != null) socket.close();
-		}	
+		}
+	}
+	
+	/**
+	 * New thread to handle the newly request
+	 * @author AlexChen
+	 *
+	 */
+	static class Connection extends Thread{
+		DatagramSocket socket = null;
+		DatagramPacket request = null;
+		String result = null;
+		public Connection(DatagramSocket n_socket, DatagramPacket n_request) {
+			this.socket = n_socket;
+			this.request = n_request;
+			String requestcode = new String(request.getData()).trim().substring(0, 3);
+			switch (requestcode) {
+			case "001":
+				Config_DDO.LOGGER.info("Request code: " + requestcode + "\n" + "ManagerID: " + (new String(request.getData()).trim().substring(3)));
+				result = checkManagerID(new String(request.getData()).trim().substring(3));
+				break;
+			case "002":
+				Config_DDO.LOGGER.info("Request code: " + requestcode + "\n" + "SearchType: " + (new String(request.getData()).trim().substring(3)));
+				result = getLocalHashSize(new String(request.getData()).trim().substring(3));
+				break;
+			}
+			this.start();
+		}
+		
+		@Override
+		public void run() {
+			try {
+				DatagramPacket reply = new DatagramPacket(result.getBytes(),result.getBytes().length, request.getAddress(), request.getPort()); 
+				socket.send(reply);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -273,7 +300,7 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		if(recordType.equalsIgnoreCase("dr")){
 			return "DDO "+"DR: "+dr_num;
 		}else if(recordType.equalsIgnoreCase("nr")){
-			return "DDO "+"NR: "+dr_num;
+			return "DDO "+"NR: "+nr_num;
 		}else{
 			return "DDO "+"ALL: "+(dr_num+nr_num);
 		}
