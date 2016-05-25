@@ -20,6 +20,7 @@ import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 import Server_Side.NumAssign_Interface;
 import Server_Side.Server_DDO.Config_DDO;
+import Server_Side.Server_MTL.Config_MTL;
 import Server_Side.ClinicServers_Interface;
 
 /**
@@ -257,11 +258,11 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 			String requestcode = new String(request.getData()).trim().substring(0, 3);
 			switch (requestcode) {
 			case "001":
-				Config_LVL.LOGGER.info("Request code: " + requestcode + "\n" + "ManagerID: " + (new String(request.getData()).trim().substring(3)));
+				Config_LVL.LOGGER.info("Request code: " + requestcode + ", " + "Check ManagerID: " + (new String(request.getData()).trim().substring(3)+ " valid or not."));
 				result = checkManagerID(new String(request.getData()).trim().substring(3));
 				break;
 			case "002":
-				Config_LVL.LOGGER.info("Request code: " + requestcode + "\n" + "SearchType: " + (new String(request.getData()).trim().substring(3)));
+				Config_LVL.LOGGER.info("Request code: " + requestcode + ", " + "Search HashMap, SearchType: " + (new String(request.getData()).trim().substring(3)));
 				result = getLocalHashSize(new String(request.getData()).trim().substring(3));
 				break;
 			}

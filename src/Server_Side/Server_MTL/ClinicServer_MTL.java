@@ -259,11 +259,11 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 			String requestcode = new String(request.getData()).trim().substring(0, 3);
 			switch (requestcode) {
 			case "001":
-				Config_MTL.LOGGER.info("Request code: " + requestcode + "\n" + "ManagerID: " + (new String(request.getData()).trim().substring(3)));
+				Config_MTL.LOGGER.info("Request code: " + requestcode + ", " + "Check ManagerID: " + (new String(request.getData()).trim().substring(3)+ " valid or not."));
 				result = checkManagerID(new String(request.getData()).trim().substring(3));
 				break;
 			case "002":
-				Config_MTL.LOGGER.info("Request code: " + requestcode + "\n" + "SearchType: " + (new String(request.getData()).trim().substring(3)));
+				Config_MTL.LOGGER.info("Request code: " + requestcode + ", " + "Search HashMap, SearchType: " + (new String(request.getData()).trim().substring(3)));
 				result = getLocalHashSize(new String(request.getData()).trim().substring(3));
 				break;
 			}
