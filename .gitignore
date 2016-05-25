@@ -1,9 +1,13 @@
 *.class
 *.class
 <<<<<<< HEAD
+<<<<<<< HEAD
 /bin/
 =======
 *.lck
 >>>>>>> origin/Versioin_2
 
 *.log
+=======
+*.lck
+>>>>>>> origin/Versioin_2
