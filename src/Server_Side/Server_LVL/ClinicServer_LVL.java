@@ -179,7 +179,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 	 */
 	public static Boolean checkLocation(String location){
 		for(Config_LVL.D_LOCATION d_location: Config_LVL.D_LOCATION.values()){
-			if(location.equals(d_location)){
+			if(location.equals(d_location.toString())){
 				return true;
 			}
 		}
@@ -193,7 +193,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 	 */
 	public static Boolean checkDesignation(String designation){
 		for(Config_LVL.N_DESIGNATION n_designation: Config_LVL.N_DESIGNATION.values()){
-			if(designation.equals(n_designation)){
+			if(designation.equals(n_designation.toString())){
 				return true;
 			}
 		}
@@ -207,7 +207,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 	 */
 	public static Boolean checkStatus(String status){
 		for(Config_LVL.N_STATUS n_status: Config_LVL.N_STATUS.values()){
-			if(status.equals(n_status)){
+			if(status.equals(n_status.toString())){
 				return true;
 			}
 		}
@@ -249,6 +249,7 @@ public class ClinicServer_LVL implements ClinicServers_Interface {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * this method is check the manager ID
 	 * @param managerID

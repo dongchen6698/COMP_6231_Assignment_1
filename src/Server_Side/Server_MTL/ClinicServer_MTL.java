@@ -180,7 +180,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	 */
 	public static Boolean checkLocation(String location){
 		for(Config_MTL.D_LOCATION d_location: Config_MTL.D_LOCATION.values()){
-			if(location.equals(d_location)){
+			if(location.equals(d_location.toString())){
 				return true;
 			}
 		}
@@ -194,7 +194,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	 */
 	public static Boolean checkDesignation(String designation){
 		for(Config_MTL.N_DESIGNATION n_designation: Config_MTL.N_DESIGNATION.values()){
-			if(designation.equals(n_designation)){
+			if(designation.equals(n_designation.toString())){
 				return true;
 			}
 		}
@@ -208,7 +208,7 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	 */
 	public static Boolean checkStatus(String status){
 		for(Config_MTL.N_STATUS n_status: Config_MTL.N_STATUS.values()){
-			if(status.equals(n_status)){
+			if(status.equals(n_status.toString())){
 				return true;
 			}
 		}
