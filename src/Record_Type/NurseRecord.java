@@ -1,7 +1,7 @@
 package Record_Type;
 
 /**
- * a class of the nurse record
+ * A class of the nurse record
  * @author peilin
  *
  */
@@ -14,13 +14,12 @@ public class NurseRecord {
 	private String statusDate;
 
 	/**
-	 * 	
+	 * Default Constructor of NurseRecord.
 	 * @param n_firstName
 	 * @param n_lastName
 	 * @param n_designation
 	 * @param n_status
 	 * @param n_statusDate
-	 * Default Constructor of NurseRecord.
 	 */
 	public NurseRecord(String n_firstName, String n_lastName, String n_designation, String n_status, String n_statusDate) {
 		this.firstName = n_firstName;
@@ -31,7 +30,7 @@ public class NurseRecord {
 	}
 	
 	/**
-	 * this is a method of get first name
+	 * This is a method of get first name
 	 * @return
 	 */
 	public String getFirstName() {
@@ -39,7 +38,7 @@ public class NurseRecord {
 	}
 
 	/**
-	 * this is a method of set first name
+	 * This is a method of set first name
 	 * @param firstName
 	 */
 	public void setFirstName(String firstName) {
@@ -47,7 +46,7 @@ public class NurseRecord {
 	}
 
 	/**
-	 * this is a method of get last name
+	 * This is a method of get last name
 	 * @return
 	 */
 	public String getLastName() {
@@ -55,7 +54,7 @@ public class NurseRecord {
 	}
 
 	/**
-	 * this is a method of set last name
+	 * This is a method of set last name
 	 * @param lastName
 	 */
 	public void setLastName(String lastName) {
@@ -63,7 +62,7 @@ public class NurseRecord {
 	}
 
 	/**
-	 * this is a method of get designation
+	 * This is a method of get designation
 	 * @return
 	 */
 	public String getDesignation() {
@@ -71,14 +70,15 @@ public class NurseRecord {
 	}
 
 	/**
-	 * this is a method of set designation
+	 * This is a method of set designation
 	 * @param designation
 	 */
 	public void setDesignation(String designation) {
 		this.designation = designation;
 	}
+	
 	/**
-	 * this is method of get status
+	 * This is method of get status
 	 * @return
 	 */
 	public String getStatus() {
@@ -86,7 +86,7 @@ public class NurseRecord {
 	}
 
 	/**
-	 * this is a method of set status
+	 * This is a method of set status
 	 * @param status
 	 */
 	public void setStatus(String status) {
@@ -94,7 +94,7 @@ public class NurseRecord {
 	}
 	
 	/**
-	 * this is a method of get status date
+	 * This is a method of get status date
 	 * @return
 	 */
 	public String getStatusDate() {
@@ -102,7 +102,7 @@ public class NurseRecord {
 	}
 	
 	/**
-	 * this is a method of set status date 
+	 * This is a method of set status date 
 	 * @param statusDate
 	 */
 	public void setStatusDate(String statusDate) {
@@ -110,7 +110,7 @@ public class NurseRecord {
 	}
 	
 	/**
-	 * this is method of print information
+	 * This is method of print information
 	 */
 	@Override
 	public String toString() {

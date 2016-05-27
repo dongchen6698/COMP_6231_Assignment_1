@@ -1,7 +1,7 @@
 package Record_Type;
 
 /**
- * a class of record information
+ * A class of record information
  * @author peilin
  *
  */
@@ -20,11 +20,11 @@ public class RecordInfo {
 		this.recordID = n_recordID;
 		this.doctorRecord = n_doctorRecord;
 	}
+	
 	/**
-	 * 	
+	 * 	This Constructor is for create nurse record with recordID.
 	 * @param n_recordID
 	 * @param n_nurseRecord
-	 * This Constructor is for create nurse record with recordID.
 	 */
 	public RecordInfo(String n_recordID, NurseRecord n_nurseRecord) {
 		this.recordID = n_recordID;
@@ -32,7 +32,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is a method of get record id
+	 * This is a method of get record id
 	 * @return
 	 */
 	public String getRecordID() {
@@ -40,7 +40,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is method of set record id
+	 * This is method of set record id
 	 * @param recordID
 	 */
 	public void setRecordID(String recordID) {
@@ -48,7 +48,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is method of get doctor record
+	 * This is method of get doctor record
 	 * @return
 	 */
 	public DoctorRecord getDoctorRecord() {
@@ -56,7 +56,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is method of set doctor record
+	 * This is method of set doctor record
 	 * @param doctorRecord
 	 */
 	public void setDoctorRecord(DoctorRecord doctorRecord) {
@@ -64,7 +64,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is method of get nurse record
+	 * This is method of get nurse record
 	 * @return
 	 */
 	public NurseRecord getNurseRecord() {
@@ -72,7 +72,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is method of set a nurse record
+	 * This is method of set a nurse record
 	 * @param nurseRecord
 	 */
 	public void setNurseRecord(NurseRecord nurseRecord) {
@@ -80,7 +80,7 @@ public class RecordInfo {
 	}
 	
 	/**
-	 * this is method of print information
+	 * This is method of print information
 	 */
 	@Override
 	public String toString() {

@@ -15,14 +15,13 @@ public class DoctorRecord {
 	private String location;
 	
 	/**
-	 * 
+	 * Default Constructor of DoctorRecord.
 	 * @param n_firstName
 	 * @param n_lastName
 	 * @param n_address
 	 * @param n_phone
 	 * @param n_specialization
 	 * @param n_location
-	 * Default Constructor of DoctorRecord.
 	 */
 	public DoctorRecord(String n_firstName, String n_lastName, String n_address, String n_phone, String n_specialization, String n_location){
 		this.firstName = n_firstName;
@@ -34,7 +33,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of get first name
+	 * This is a method of get first name
 	 * @return
 	 */
 	public String getFirstName() {
@@ -42,7 +41,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of set first name
+	 * This is a method of set first name
 	 * @param firstName
 	 */
 	public void setFirstName(String firstName) {
@@ -50,7 +49,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of get last name
+	 * This is a method of get last name
 	 * @return
 	 */
 	public String getLastName() {
@@ -58,7 +57,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of set last name
+	 * This is a method of set last name
 	 * @param lastName
 	 */
 	public void setLastName(String lastName) {
@@ -66,7 +65,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of get address
+	 * This is a method of get address
 	 * @return
 	 */
 	public String getAddress() {
@@ -74,7 +73,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of set address
+	 * This is a method of set address
 	 * @param address
 	 */
 	public void setAddress(String address) {
@@ -82,7 +81,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of get phone number
+	 * This is a method of get phone number
 	 * @return
 	 */
 	public String getPhone() {
@@ -90,7 +89,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of set phone number
+	 * This is a method of set phone number
 	 * @param phone
 	 */
 	public void setPhone(String phone) {
@@ -98,7 +97,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of get specialization
+	 * This is a method of get specialization
 	 * @return
 	 */
 	public String getSpecialization() {
@@ -106,7 +105,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of set specialization
+	 * This is a method of set specialization
 	 * @param specialization
 	 */
 	public void setSpecialization(String specialization) {
@@ -114,7 +113,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of get the location
+	 * This is a method of get the location
 	 * @return
 	 */
 	public String getLocation() {
@@ -122,7 +121,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of set the location
+	 * This is a method of set the location
 	 * @param location
 	 */
 	public void setLocation(String location) {
@@ -130,7 +129,7 @@ public class DoctorRecord {
 	}
 	
 	/**
-	 * this is a method of print the information
+	 * This is a method of print the information
 	 */
 	@Override
 	public String toString() {
@@ -142,6 +141,5 @@ public class DoctorRecord {
 					+ "location: " + getLocation() + "\n";
 		return str;
 	}
-	
 	
 }
