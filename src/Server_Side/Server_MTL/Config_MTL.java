@@ -37,6 +37,7 @@ public class Config_MTL {
 			add("MTL10002");
 		}
 	};
+	
 	static Map<Character, ArrayList<RecordInfo>> HASH_TABLE = new HashMap<Character, ArrayList<RecordInfo>>(){
 		{
 			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00001", new DoctorRecord("one", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));

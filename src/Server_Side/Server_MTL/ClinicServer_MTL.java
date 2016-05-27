@@ -396,11 +396,10 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 	 * @return
 	 * 
 	 */
-	public static String sendMessageToOtherServer(int server_port, String recordType){
+	public static String sendMessageToOtherServer(int serverPort, String recordType){
 		DatagramSocket socket = null;
 		String hostname = "127.0.0.1";
 		String requestcode = "002";
-		int serverPort = server_port;
 		
 	    try {
 	    	socket = new DatagramSocket();
