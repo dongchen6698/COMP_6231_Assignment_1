@@ -21,8 +21,6 @@ import Record_Type.DoctorRecord;
 import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 import Server_Side.NumAssign_Interface;
-import Server_Side.Server_DDO.Config_DDO;
-import Server_Side.Server_MTL.Config_MTL;
 import Server_Side.ClinicServers_Interface;
 
 /**

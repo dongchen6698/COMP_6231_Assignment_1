@@ -8,7 +8,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import java.util.regex.Matcher;
@@ -223,7 +222,9 @@ public class ManagerClients {
 					String d_location =keyboard.next();
 					String d_result = Config_Client.STUB.createDRecord(d_firstname, d_lastname, d_address, d_phone, d_specialization, d_location);
 					System.out.println(d_result);
-					Config_Client.LOGGER.info("Manager Creat Doctor Record Succeed!" + "\n" + d_result);
+					if(!d_result.contains("is not right")){
+						Config_Client.LOGGER.info("Manager Creat Doctor Record Succeed!" + "\n" + d_result);
+					}
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 2:
@@ -240,7 +241,9 @@ public class ManagerClients {
 					String n_status_date = keyboard.next();
 					String n_result = Config_Client.STUB.createNRecord(n_firstname, n_lastname, n_designation, n_status, n_status_date);
 					System.out.println(n_result);
-					Config_Client.LOGGER.info("Manager Creat Nurse Record Succeed!" + "\n" + n_result);
+					if(!n_result.contains("is not right")){
+						Config_Client.LOGGER.info("Manager Creat Doctor Record Succeed!" + "\n" + n_result);
+					}
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 3:
@@ -262,7 +265,9 @@ public class ManagerClients {
 					String newvalue = keyboard.next();
 					String e_result = Config_Client.STUB.editRecord(recordID, fieldname, newvalue);
 					System.out.println(e_result);
-					Config_Client.LOGGER.info("Manager Edit Record Succeed!" + "\n" + e_result);
+					if(!e_result.contains("is not right")){
+						Config_Client.LOGGER.info("Manager Creat Doctor Record Succeed!" + "\n" + e_result);
+					}
 					showMenu(Config_Client.MANAGER_ID);
 					break;
 				case 5:
