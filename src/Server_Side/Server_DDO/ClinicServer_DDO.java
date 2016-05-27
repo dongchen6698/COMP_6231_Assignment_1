@@ -8,6 +8,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.logging.FileHandler;
@@ -20,6 +22,7 @@ import Record_Type.NurseRecord;
 import Record_Type.RecordInfo;
 import Server_Side.NumAssign_Interface;
 import Server_Side.Server_LVL.Config_LVL;
+import Server_Side.Server_MTL.Config_MTL;
 import Server_Side.ClinicServers_Interface;
 
 /**
@@ -42,7 +45,9 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 	@Override
 	public String createDRecord(String firstName, String lastName, String address, String phone,
 			String specialization, String location) throws RemoteException {
-		
+		if(!checkLocation(location)){
+			return "Location is not right. Please input (mtl,lvl or ddo).\n";
+		}
 		String recordID = null;
 		RecordInfo doc_recorde_with_recordID = null;
 		
@@ -68,7 +73,15 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 	@Override
 	public String createNRecord(String firstName, String lastName, String designation, String status,
 			String statusDate) throws RemoteException {
-		
+		if(!checkDesignation(designation)){
+			return "Designation is not right. Please input (junior or senior).\n";
+		}
+		if(!checkStatus(status)){
+			return "Status is not right. Please input (active or terminated).\n";
+		}
+		if(!checkStatusDate(statusDate)){
+			return "Status Date is not right. Please input the right format of date (yyyy/mm/dd).";
+		}
 		String recordID = null;
 		RecordInfo nur_recorde_with_recordID = null;
 		 
@@ -119,16 +132,25 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the phone of Doctor Record: "+ "\n" + record.toString());
 						return "edit succeed !\n"+record.toString();
 					}else if (fieldName.equalsIgnoreCase("Location")){
+						if(!checkLocation(newValue)){
+							return "Location is not right. Please input (mtl,lvl or ddo).\n";
+						}
 						record.getDoctorRecord().setLocation(newValue);
 						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Location of Doctor Record: "+ "\n" + record.toString());
 						return "edit succeed !\n"+record.toString();
 					}
 				}else if(recordID.contains("NR")||recordID.contains("nr")){
 					if(fieldName.equalsIgnoreCase("Designation")){
+						if(!checkDesignation(newValue)){
+							return "Designation is not right. Please input (junior or senior).\n";
+						}
 						record.getNurseRecord().setDesignation(newValue);
 						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Designation of Nurse Record: "+ "\n" + record.toString());
 						return "edit succeed !\n"+record.toString();
 					}else if(fieldName.equalsIgnoreCase("Status")){
+						if(!checkStatus(newValue)){
+							return "Status is not right. Please input (active or terminated).\n";
+						}
 						record.getNurseRecord().setStatus(newValue);
 						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Status of Nurse Record: "+ "\n" + record.toString());
 						return "edit succeed !\n"+record.toString();
@@ -147,6 +169,64 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		initLogger(Config_DDO.SERVER_NAME);
 		exportServerObject();
 		openUDPListener();
+	}
+	
+	/**
+	 * Local check Location is right or not.
+	 * @param location
+	 * @return
+	 */
+	public static Boolean checkLocation(String location){
+		for(Config_DDO.D_LOCATION d_location: Config_DDO.D_LOCATION.values()){
+			if(location.equals(d_location)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Local check Designation is right or not.
+	 * @param designation
+	 * @return
+	 */
+	public static Boolean checkDesignation(String designation){
+		for(Config_DDO.N_DESIGNATION n_designation: Config_DDO.N_DESIGNATION.values()){
+			if(designation.equals(n_designation)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Local check Status is right or not.
+	 * @param status
+	 * @return
+	 */
+	public static Boolean checkStatus(String status){
+		for(Config_DDO.N_STATUS n_status: Config_DDO.N_STATUS.values()){
+			if(status.equals(n_status)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Local check Status Date is right or not.
+	 * @param date
+	 * @return
+	 */
+	public static Boolean checkStatusDate(String date){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+		try {
+			format.setLenient(false);
+			format.parse(date);
+		} catch (ParseException e) {
+			return false;
+		}
+		return true;	
 	}
 	
 	/**

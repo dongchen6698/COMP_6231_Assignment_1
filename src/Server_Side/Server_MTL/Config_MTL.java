@@ -17,6 +17,18 @@ import Record_Type.RecordInfo;
  * This is a config file of Server_Montreal.
  */
 public class Config_MTL {
+	static enum D_LOCATION{
+		mtl,lvl,ddo
+	}
+	
+	static enum N_DESIGNATION{
+		junior,senior
+	}
+	
+	static enum N_STATUS{
+		active,terminated
+	}
+	
 	//static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("MTL10000", "MTL10001", "MTL10002"));
 	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){
 		{

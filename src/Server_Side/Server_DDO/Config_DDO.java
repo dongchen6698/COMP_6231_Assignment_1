@@ -17,6 +17,17 @@ import Record_Type.RecordInfo;
  *This is a config file of Server_DDO.
  */
 public class Config_DDO {
+	static enum D_LOCATION{
+		mtl,lvl,ddo
+	}
+	
+	static enum N_DESIGNATION{
+		junior,senior
+	}
+	
+	static enum N_STATUS{
+		active,terminated
+	}
 //	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(Arrays.asList("DDO10000", "DDO10001", "DDO10002"));
 	static ArrayList<String> MANAGER_ACCOUNT = new ArrayList<String>(){
 		{
