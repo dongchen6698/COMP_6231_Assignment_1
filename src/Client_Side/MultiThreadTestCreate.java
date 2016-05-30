@@ -5,16 +5,27 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 import Server_Side.ClinicServers_Interface;
-
+/**
+ * test multithread class
+ * @author peilin
+ *
+ */
 public class MultiThreadTestCreate implements Runnable{
 	static Registry registry;
 	static ClinicServers_Interface stub;
 	String threadID;
 	
+	/**
+	 * this is a constructor of the class
+	 * @param n_threadID
+	 */
 	public MultiThreadTestCreate(String n_threadID) {
 		this.threadID = n_threadID;
 	}
 	
+	/**
+	 * get stub  for the test
+	 */
 	public static void getStubForTest(){
 		try {
 			registry = LocateRegistry.getRegistry();
@@ -24,6 +35,9 @@ public class MultiThreadTestCreate implements Runnable{
 		}
 	}
 	
+	/**
+	 * run method 
+	 */
 	@Override
 	public void run() {
 		try {
