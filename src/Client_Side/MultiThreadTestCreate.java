@@ -55,11 +55,11 @@ public class MultiThreadTestCreate implements Runnable{
 	
 	public static void main(String[] args) {
 		getStubForTest();
-		Thread testForCreateDR[] = new Thread[10];
-		for(int i=0;i<10;i++){
+		Thread testForCreateDR[] = new Thread[100];
+		for(int i=0;i<100;i++){
 			testForCreateDR[i] = new Thread(new MultiThreadTestCreate("CreatDR_T " + i));
 		}
-		for(int i=0;i<10;i++){
+		for(int i=0;i<100;i++){
 			testForCreateDR[i].start();
 		}				
 	}

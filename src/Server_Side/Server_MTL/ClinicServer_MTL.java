@@ -58,8 +58,9 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		DoctorRecord doc_recorde = new DoctorRecord(firstName, lastName, address, phone, specialization, location);
 		recordID = "DR" + getNumAssignStub().getSartNumber();
 		doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
-		Config_MTL.RECORD_LIST.add(doc_recorde_with_recordID);
+		
 		synchronized (this) {
+			Config_MTL.RECORD_LIST.add(doc_recorde_with_recordID);
 			Config_MTL.HASH_TABLE.put(capital_lastname, Config_MTL.RECORD_LIST);
 		}
 		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
@@ -93,8 +94,9 @@ public class ClinicServer_MTL implements ClinicServers_Interface {
 		NurseRecord nur_recorde = new NurseRecord(firstName, lastName, designation, status, statusDate);
 		recordID = "NR" + getNumAssignStub().getSartNumber();
 		nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
-		Config_MTL.RECORD_LIST.add(nur_recorde_with_recordID);
+		
 		synchronized (this) {
+			Config_MTL.RECORD_LIST.add(nur_recorde_with_recordID);
 			Config_MTL.HASH_TABLE.put(capital_lastname, Config_MTL.RECORD_LIST);
 		}
 		Config_MTL.LOGGER.info("Manager: "+ Config_MTL.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());

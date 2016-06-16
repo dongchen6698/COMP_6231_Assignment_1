@@ -58,8 +58,9 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		DoctorRecord doc_recorde = new DoctorRecord(firstName, lastName, address, phone, specialization, location);
 		recordID = "DR" + getNumAssignStub().getSartNumber();
 		doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
-		Config_DDO.RECORD_LIST.add(doc_recorde_with_recordID);
+		
 		synchronized (this) {
+			Config_DDO.RECORD_LIST.add(doc_recorde_with_recordID);
 			Config_DDO.HASH_TABLE.put(capital_lastname, Config_DDO.RECORD_LIST);
 		}
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
@@ -92,8 +93,9 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		NurseRecord nur_recorde = new NurseRecord(firstName, lastName, designation, status, statusDate);
 		recordID = "NR" + getNumAssignStub().getSartNumber();
 		nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
-		Config_DDO.RECORD_LIST.add(nur_recorde_with_recordID);
+		
 		synchronized (this) {
+			Config_DDO.RECORD_LIST.add(nur_recorde_with_recordID);
 			Config_DDO.HASH_TABLE.put(capital_lastname, Config_DDO.RECORD_LIST);
 		}
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());

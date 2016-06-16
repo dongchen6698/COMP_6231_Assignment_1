@@ -1,7 +1,6 @@
 package Server_Side;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.Date;
 
 /**
  * this is a interface
