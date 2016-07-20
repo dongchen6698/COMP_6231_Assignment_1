@@ -42,8 +42,6 @@ public class Config_MTL {
 		{
 			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00001", new DoctorRecord("one", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));
 			put('Z', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00002", new DoctorRecord("two", "Zhang", "Montreal", "5142345678", "Surgery", "mtl")))));
-//			put('W', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00003", new NurseRecord("three", "Wang", "junior", "active", "2005/09/12")))));
-//			put('H', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00004", new NurseRecord("four", "Hu", "junior", "active", "2016/09/12")))));
 		}
 	};
 	static String MANAGER_ID = null;

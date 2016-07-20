@@ -59,10 +59,10 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		recordID = "DR" + getNumAssignStub().getSartNumber();
 		doc_recorde_with_recordID = new RecordInfo(recordID, doc_recorde);
 		
-		synchronized (this) {
+		synchronized (Config_DDO.RECORD_LIST) {
 			Config_DDO.RECORD_LIST.add(doc_recorde_with_recordID);
-			Config_DDO.HASH_TABLE.put(capital_lastname, Config_DDO.RECORD_LIST);
 		}
+		Config_DDO.HASH_TABLE.put(capital_lastname, Config_DDO.RECORD_LIST);
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " Creat Doctor Record: "+ "\n" +doc_recorde_with_recordID.toString());
 		return "Doctor Record Buid Succeed !" + "\n" +doc_recorde_with_recordID.toString();
 	}
@@ -94,10 +94,10 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		recordID = "NR" + getNumAssignStub().getSartNumber();
 		nur_recorde_with_recordID = new RecordInfo(recordID, nur_recorde);
 		
-		synchronized (this) {
+		synchronized (Config_DDO.RECORD_LIST) {
 			Config_DDO.RECORD_LIST.add(nur_recorde_with_recordID);
-			Config_DDO.HASH_TABLE.put(capital_lastname, Config_DDO.RECORD_LIST);
 		}
+		Config_DDO.HASH_TABLE.put(capital_lastname, Config_DDO.RECORD_LIST);
 		Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " Creat Nurse Record: "+ "\n" +nur_recorde_with_recordID.toString());
 		return "Nurse Record Buid Succeed !" + "\n" +nur_recorde_with_recordID.toString();
 	}
@@ -123,44 +123,50 @@ public class ClinicServer_DDO implements ClinicServers_Interface {
 		for(Map.Entry<Character, ArrayList<RecordInfo>> entry:Config_DDO.HASH_TABLE.entrySet()){
 			for(RecordInfo record:entry.getValue()){
 				if(recordID.equalsIgnoreCase(record.getRecordID())){
-					if(fieldName.equalsIgnoreCase("Address")){
-						record.getDoctorRecord().setAddress(newValue);
-						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Address of Doctor Record: "+ "\n" + record.toString());
-						return "edit succeed !\n"+record.toString();
-					}else if(fieldName.equalsIgnoreCase("Phone")){
-						record.getDoctorRecord().setPhone(newValue);
-						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the phone of Doctor Record: "+ "\n" + record.toString());
-						return "edit succeed !\n"+record.toString();
-					}else if (fieldName.equalsIgnoreCase("Location")){
-						if(!checkLocation(newValue)){
-							return "Location is not right. Please input (mtl,lvl or ddo).\n";
+					if(recordID.contains("DR")||recordID.contains("dr")){
+						synchronized (record) {
+							if(fieldName.equalsIgnoreCase("Address")){
+								record.getDoctorRecord().setAddress(newValue);
+								Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Address of Doctor Record: "+ "\n" + record.toString());
+								return "edit succeed !\n"+record.toString();
+							}else if(fieldName.equalsIgnoreCase("Phone")){
+								record.getDoctorRecord().setPhone(newValue);
+								Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the phone of Doctor Record: "+ "\n" + record.toString());
+								return "edit succeed !\n"+record.toString();
+							}else if (fieldName.equalsIgnoreCase("Location")){
+								if(!checkLocation(newValue)){
+									return "Location is not right. Please input (mtl,lvl or ddo).\n";
+								}
+								record.getDoctorRecord().setLocation(newValue);
+								Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Location of Doctor Record: "+ "\n" + record.toString());
+								return "edit succeed !\n"+record.toString();
+							}
 						}
-						record.getDoctorRecord().setLocation(newValue);
-						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Location of Doctor Record: "+ "\n" + record.toString());
-						return "edit succeed !\n"+record.toString();
-					}
 				}else if(recordID.contains("NR")||recordID.contains("nr")){
-					if(fieldName.equalsIgnoreCase("Designation")){
-						if(!checkDesignation(newValue)){
-							return "Designation is not right. Please input (junior or senior).\n";
+					synchronized (record) {
+						if(fieldName.equalsIgnoreCase("Designation")){
+							if(!checkDesignation(newValue)){
+								return "Designation is not right. Please input (junior or senior).\n";
+							}
+							record.getNurseRecord().setDesignation(newValue);
+							Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Designation of Nurse Record: "+ "\n" + record.toString());
+							return "edit succeed !\n"+record.toString();
+						}else if(fieldName.equalsIgnoreCase("Status")){
+							if(!checkStatus(newValue)){
+								return "Status is not right. Please input (active or terminated).\n";
+							}
+							record.getNurseRecord().setStatus(newValue);
+							Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Status of Nurse Record: "+ "\n" + record.toString());
+							return "edit succeed !\n"+record.toString();
+						}else if (fieldName.equalsIgnoreCase("statusDate")){
+							record.getNurseRecord().setStatusDate(newValue);
+							Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Status date of Nurse Record: "+ "\n" + record.toString());
+							return "edit succeed !\n"+record.toString();
 						}
-						record.getNurseRecord().setDesignation(newValue);
-						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Designation of Nurse Record: "+ "\n" + record.toString());
-						return "edit succeed !\n"+record.toString();
-					}else if(fieldName.equalsIgnoreCase("Status")){
-						if(!checkStatus(newValue)){
-							return "Status is not right. Please input (active or terminated).\n";
-						}
-						record.getNurseRecord().setStatus(newValue);
-						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Status of Nurse Record: "+ "\n" + record.toString());
-						return "edit succeed !\n"+record.toString();
-					}else if (fieldName.equalsIgnoreCase("statusDate")){
-						record.getNurseRecord().setStatusDate(newValue);
-						Config_DDO.LOGGER.info("Manager: "+ Config_DDO.MANAGER_ID + " edit the Status date of Nurse Record: "+ "\n" + record.toString());
-						return "edit succeed !\n"+record.toString();
 					}
 				}
 			}
+		}
 		}
 		return "edit failed";
 	}

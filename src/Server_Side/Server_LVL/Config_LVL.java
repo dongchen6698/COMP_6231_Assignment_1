@@ -38,8 +38,6 @@ public class Config_LVL {
 	};
 	static Map<Character, ArrayList<RecordInfo>> HASH_TABLE = new HashMap<Character, ArrayList<RecordInfo>>(){
 		{
-//			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00005", new DoctorRecord("five", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));
-//			put('Z', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00006", new DoctorRecord("six", "Zhang", "Montreal", "5142345678", "Surgery", "mtl")))));
 			put('W', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00007", new NurseRecord("seven", "Wang", "junior", "active", "2005/09/12")))));
 			put('H', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00008", new NurseRecord("eight", "Hu", "junior", "active", "2016/09/12")))));
 		}

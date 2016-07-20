@@ -38,9 +38,7 @@ public class Config_DDO {
 	};
 	static Map<Character, ArrayList<RecordInfo>> HASH_TABLE = new HashMap<Character, ArrayList<RecordInfo>>(){
 		{
-//			put('L', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00009", new DoctorRecord("nine", "Li", "Montreal", "5141234567", "Surgery", "mtl")))));
 			put('Z', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("DR00010", new DoctorRecord("ten", "Zhang", "Montreal", "5142345678", "Surgery", "mtl")))));
-//			put('W', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00011", new NurseRecord("eleven", "Wang", "junior", "active", "2005/09/12")))));
 			put('H', new ArrayList<RecordInfo>(Arrays.asList(new RecordInfo("NR00012", new NurseRecord("twelve", "Hu", "junior", "active", "2016/09/12")))));
 		}
 	};
